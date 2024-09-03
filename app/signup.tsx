@@ -81,7 +81,7 @@ const Signup = () => {
                         gap: 10,
                     }}>
                     <ActivityIndicator size="large" color="#fff" />
-                    <Text style={{ color: '#fff', fontSize: 20 }}>Loading...</Text>
+                    <Text style={{ color: '#fff', fontSize: 20 }}></Text>
                 </View>
             )}
 

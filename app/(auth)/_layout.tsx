@@ -1,47 +1,42 @@
-import { Tabs } from 'expo-router';
-import { supabase } from '@/utils/supabase';
-import { TouchableOpacity } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { Drawer } from 'expo-router/drawer';
+import { Dimensions, View, Text, TouchableHighlight } from 'react-native';
+import { DrawerContentScrollView, DrawerItem, DrawerItemList } from '@react-navigation/drawer';
+import React from 'react';
+import { Link, useRouter } from 'expo-router';
+import CustomDrawerContent from '@/components/CustomDrawerContent';
+
+const width = Dimensions.get("screen").width;
 
 const Layout = () => {
 
   return (
-    <Tabs
-      screenOptions={{
-        headerShadowVisible: false,
-        headerStyle: {
-          backgroundColor: '#fff',
-        },
-        tabBarStyle: {
-          backgroundColor: '#fff',
-        },
-        tabBarActiveTintColor: '#000',
-        headerTintColor: '#fff',
-        headerRight: () => (
-          <TouchableOpacity onPress={() => supabase.auth.signOut()}>
-            <Ionicons name="log-out-outline" size={24} color="white" />
-          </TouchableOpacity>
-        ),
-      }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Home',
-          tabBarIcon: ({ size, color }) => (
-            <Ionicons name="home-outline" size={size} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="profile"
-        options={{
-          title: 'Profile',
-          tabBarIcon: ({ size, color }) => (
-            <Ionicons name="person-outline" size={size} color={color} />
-          ),
-        }}
-      />
-    </Tabs>
+
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <Drawer
+        drawerContent={CustomDrawerContent}
+        screenOptions={{
+          headerShown: false,
+          drawerStyle: {
+            width: Dimensions.get('window').width,
+          },
+          drawerHideStatusBarOnOpen: true
+        }}>
+        <Drawer.Screen
+          name="(tabs)"
+          options={{
+            drawerItemStyle: { display: 'none' }
+          }}
+        />
+        <Drawer.Screen
+          name="settings"
+          options={{
+            drawerLabel: 'Settings',
+            title: 'settings',
+          }}
+        />
+      </Drawer>
+    </GestureHandlerRootView >
   );
 };
 export default Layout;
