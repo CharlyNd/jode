@@ -2,7 +2,6 @@ import { View, Text, TextInput, StyleSheet, SafeAreaView, Image, ActivityIndicat
 import React, { useEffect, useState } from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
-import Feather from '@expo/vector-icons/Feather';
 import * as ImagePicker from 'expo-image-picker';
 import { supabase } from '@/utils/supabase';
 import * as FileSystem from 'expo-file-system';
@@ -52,7 +51,6 @@ export default function Demande() {
       .download(`${User?.id}/demande.png`)
       .then(({ data }) => {
         setLoading(false);
-        // console.log(data);
         if (!data) return;
 
         const fr = new FileReader();
@@ -220,7 +218,7 @@ export default function Demande() {
             {!showNext ?
               <TouchableOpacity
                 onPress={() => router.replace('/(auth)')} >
-                <Ionicons name="chevron-back-sharp" size={30} color="black" />
+                <Ionicons name="chevron-back-sharp" size={30} color="#e0e0e0" />
               </TouchableOpacity> : null}
             <Text style={styles.title}>Ma e-demande</Text>
             <View style={{ flexDirection: "column", alignItems: "flex-end", gap: 3 }}>
@@ -358,11 +356,11 @@ export default function Demande() {
           }}>
             <TouchableOpacity
               onPress={() => router.replace('/(auth)')} >
-              <Ionicons name="chevron-back-sharp" size={30} color="black" />
+              <Ionicons name="chevron-back-sharp" size={30} color="#e0e0e0" />
             </TouchableOpacity>
             <Text style={styles.title}>Ma e-demande</Text>
           </View>
-          <Text>Aperçu de ta demande que verra {data.prenom} lors de son inscription</Text>
+          <Text style={{color:"#e0e0e0"}}>Aperçu de ta demande que verra {data.prenom} lors de son inscription</Text>
           <View style={{ width: "25%", height: 1, backgroundColor: "#c1c1c1", marginTop: 20, marginBottom: 30 }} />
           {/* <Ionicons name="checkmark-circle" size={100} color="#2F215F" /> */}
           {imgUrl && <Image source={{ uri: imgUrl }} style={styles.avatar} />}
@@ -396,7 +394,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     height: "100%",
-    backgroundColor: "#faf7f7",
+    backgroundColor: "#000",
   },
   containerTop: {
     alignItems: 'center',
@@ -410,7 +408,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderRadius: 20,
     alignItems: 'center',
-    backgroundColor: "#faf7f7"
+    backgroundColor: "#151515"
   },
   questionButtonContainer: {
     flexDirection: "row",
@@ -421,7 +419,7 @@ const styles = StyleSheet.create({
   avatar: {
     width: "100%",
     height: 300,
-    backgroundColor: '#e0e0e0',
+    backgroundColor: '#151515',
     alignSelf: 'center',
     alignItems: "center",
     borderRadius: 20,
@@ -444,7 +442,8 @@ const styles = StyleSheet.create({
   demandeText: {
     fontSize: 18,
     textAlign: 'center',
-    marginVertical: 15
+    marginVertical: 15,
+    color:"#e0e0e0"
   },
   explication: {
     fontSize: 13,
@@ -491,7 +490,7 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 15,
     textAlign: 'center',
-    color: '#fff'
+    color: '#000'
   },
   formContainer: {
     width: '90%',
@@ -499,18 +498,20 @@ const styles = StyleSheet.create({
   },
   inputTitle: {
     marginLeft: 10,
-    marginBottom: 5
+    marginBottom: 5,
+    color: "#e0e0e0",
   },
   inputContainer: {
     marginTop: 20
   },
   input: {
-    backgroundColor: '#FFF',
+    backgroundColor: '#252525',
     paddingVertical: 15,
-    borderColor: '#ccc',
+    borderColor: '#303030',
     borderWidth: 0.5,
     borderRadius: 20,
     paddingHorizontal: 20,
+    color: '#e0e0e0',
   },
   title: {
     fontSize: 20,

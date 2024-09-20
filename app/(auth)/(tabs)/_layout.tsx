@@ -25,6 +25,13 @@ export default function Layout() {
           // Set the presentation mode to modal for our modal route.
         }}
       />
+      <Stack.Screen
+        name="nft"
+        options={{
+          headerShown: false,
+          // Set the presentation mode to modal for our modal route.
+        }}
+      />
     </Stack>
   );
 }
