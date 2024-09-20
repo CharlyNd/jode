@@ -5,6 +5,7 @@ import { DrawerContentScrollView, DrawerItem, DrawerItemList } from '@react-navi
 import React from 'react';
 import { Link, useRouter } from 'expo-router';
 import CustomDrawerContent from '@/components/CustomDrawerContent';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 const width = Dimensions.get("screen").width;
 
@@ -18,21 +19,23 @@ const Layout = () => {
         screenOptions={{
           headerShown: false,
           drawerStyle: {
-            width: Dimensions.get('window').width,
+            width: Dimensions.get('window').width * 0.95,
           },
           drawerHideStatusBarOnOpen: true
         }}>
         <Drawer.Screen
           name="(tabs)"
           options={{
-            drawerItemStyle: { display: 'none' }
+            // drawerItemStyle: { display: 'none' },
+            drawerIcon: ()=>(<Ionicons name="home-outline" size={24} color="#2F215F" />),
+            title: '',
           }}
         />
         <Drawer.Screen
           name="settings"
           options={{
-            drawerLabel: 'Settings',
-            title: 'settings',
+            drawerLabel: 'Mes données et comptes',
+            title: 'Mes données et comptes',
           }}
         />
       </Drawer>
