@@ -33,7 +33,13 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "The app accesses your photos to upload an avatar.."
+          "photosPermission": "L'application a besoin de votre permission pour accéder à vos photos"
+        }
+      ],
+      [
+        "expo-font",
+        {
+          "fonts": ["/assets/fonts/Montserrat.ttf"]
         }
       ]
     ],
