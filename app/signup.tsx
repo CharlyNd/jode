@@ -126,10 +126,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 4.8,
         shadowRadius: 0.50,
-
-        elevation: 24,
         zIndex: 0,
-        // opacity: 0.5,
     },
     inputField: {
         width: '48%',
@@ -148,8 +145,6 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.8,
         shadowRadius: 0.50,
-
-        elevation: 24,
         zIndex: 0,
         // opacity: 0.5,
     },

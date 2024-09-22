@@ -29,9 +29,7 @@ const styles = StyleSheet.create({
       height: 0,
     },
     shadowOpacity: 0.58,
-    shadowRadius: 3.00,
-
-    elevation: 24,
+    shadowRadius: 1.00,
   },
   light: {
     width: 10,
@@ -48,8 +46,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.8,
     shadowRadius: 16.00,
-
-    elevation: 24,
   },
   orangeLight: {
     backgroundColor: '#f49c19',
@@ -60,8 +56,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.8,
     shadowRadius: 16.00,
-
-    elevation: 24,
   },
   greenLight: {
     backgroundColor: '#3fb57e',
@@ -72,8 +66,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.8,
     shadowRadius: 16.00,
-
-    elevation: 24,
   },
 });
 

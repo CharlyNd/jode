@@ -190,8 +190,6 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.8,
         shadowRadius: 0.50,
-
-        elevation: 24,
         zIndex: 0,
     },
     inputFieldError: {
@@ -211,8 +209,6 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.8,
         shadowRadius: 0.50,
-
-        elevation: 24,
         zIndex: 0,
     },
     button: {

@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Dimensions } from 'react-native';
+
+const width = Dimensions.get("window").width;
+const height = Dimensions.get("window").height;
 
 const TrafficLight = (props: any) => {
-  console.log(props);
-
   return (
     <View style={styles.container}>
       <View style={[styles.light, props.color === "couple" ? styles.redLight : null]} />
@@ -15,8 +16,8 @@ const TrafficLight = (props: any) => {
 
 const styles = StyleSheet.create({
   container: {
-    width: 90,
-    height: 250,
+    width: "100%",
+    height: "100%",
     backgroundColor: 'rgba(255, 255, 255, 0.8)',
     borderBottomRightRadius: 40,
     borderBottomLeftRadius: 40,
@@ -32,12 +33,10 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.58,
     shadowRadius: 3.00,
-
-    elevation: 24,
   },
   light: {
-    width: 50,
-    height: 50,
+    width: width * 0.08,
+    height: width * 0.08,
     borderRadius: 30,
     backgroundColor: '#7a7a7a',
   },
@@ -49,9 +48,7 @@ const styles = StyleSheet.create({
       height: 0,
     },
     shadowOpacity: 0.8,
-    shadowRadius: 16.00,
-
-    elevation: 24,
+    shadowRadius: 4.00,
   },
   yellowLight: {
     backgroundColor: '#f49c19',
@@ -61,9 +58,7 @@ const styles = StyleSheet.create({
       height: 0,
     },
     shadowOpacity: 0.8,
-    shadowRadius: 16.00,
-
-    elevation: 24,
+    shadowRadius: 4.00,
   },
   greenLight: {
     backgroundColor: '#3fb57e',
@@ -73,9 +68,7 @@ const styles = StyleSheet.create({
       height: 0,
     },
     shadowOpacity: 0.8,
-    shadowRadius: 16.00,
-
-    elevation: 24,
+    shadowRadius: 4.00,
   },
 });
 

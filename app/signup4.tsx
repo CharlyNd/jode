@@ -182,8 +182,6 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.58,
         shadowRadius: 5.00,
-
-        elevation: 24,
         zIndex: 0,
     },
     editButtonContainer: {

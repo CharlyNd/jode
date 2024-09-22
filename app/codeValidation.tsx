@@ -203,7 +203,6 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 3.35,
         shadowRadius: 3.84,
-        elevation: 5,
     },
     iconContainer: {
         paddingVertical: height * 0.1,
