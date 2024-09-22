@@ -5,6 +5,7 @@ import TrafficLightBar from '@/components/TrafficLightBar';
 import { TypeAnimation } from 'react-native-type-animation';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Animated, { FadeIn } from 'react-native-reanimated';
+import { supabase } from '@/utils/supabase';
 
 const Signup = () => {
     const local = useLocalSearchParams();
@@ -25,9 +26,8 @@ const Signup = () => {
             setDatePickerVisible(false);
         }
         setDate(currentDate);
-        setDateSelected(currentDate.toLocaleDateString());
+        setDateSelected(currentDate.toISOString());
     };
-
 
     return (
         <Animated.View entering={FadeIn.duration(3500)} style={styles.container}>
@@ -142,8 +142,6 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.8,
         shadowRadius: 0.50,
-
-        elevation: 24,
         zIndex: 0,
     },
     button: {

@@ -16,16 +16,19 @@ import { StatusBar } from 'expo-status-bar';
 const Home = () => {
   const [image, setImage] = useState<string | null>(null);
   const [userName, setUserName] = useState<string | null>(null);
-  const [statut, setStatut] = useState<string | null>("libre");
-  const [colorLight, setColorLight] = useState<string | null>("orange");
+  const [situation, setSituation] = useState<string | null>("");
+  const [colorLight, setColorLight] = useState<string | null>("");
   const [isNft, setIsNft] = useState(false);
   const [data, setData] = useState<any | null>(null);
+  const [userDate, setUserDate] = useState<string | null>(null);
+  const [days, setDays] = useState<number>(0);
+  const [partenaire, setPartenaire] = useState<string | null>("");
 
   const navigation = useNavigation();
 
   useEffect(() => {
-    // loadUserAvatar();
-    // loadUser();
+    loadUserAvatar();
+    loadUser();
     // loadNft();
   }, []);
 
@@ -81,20 +84,22 @@ const Home = () => {
       .eq('userId', User?.id);
 
     if (data) {
-      console.log(data);
+      getDays(data[0].birthday);
+      setUserDate(data[0].birthday || 'No date provided');
       setUserName(data[0].name || 'No name provided');
-      setStatut(data[0].statut || 'celibataire');
-      switch (statut) {
+      setSituation(data[0].situation);
+      setPartenaire(data[0].prenomPartenaire || 'No partenaire provided');
+      switch (data[0].situation) {
         case "celibataire":
-          setColorLight("vert");
+          setColorLight("verte");
           break;
-          case "libre":
+        case "libre":
           setColorLight("orange");
           break;
-          case "couple":
+        case "couple":
           setColorLight("rouge");
           break;
-      
+
         default:
           break;
       }
@@ -119,18 +124,34 @@ const Home = () => {
 
   ];
 
+  const getDays = (userDate: string) => {
+    const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
+
+    const firstDate = new Date(userDate || '2022-12-31');
+    const secondDate = new Date();
+
+    const diffDays = Math.round(Math.abs((firstDate.getTime() - secondDate.getTime()) / oneDay));
+    setDays(diffDays);
+    console.log(diffDays);
+  }
+
+
   return (
     <View style={styles.container}>
-      <StatusBar style="light" />
-      <ImageBackground source={require("../../../assets/images/background1.png")} resizeMode="cover" style={styles.image}>
+      <StatusBar style="dark" />
+      <ImageBackground source={require("../../../assets/images/background2.png")} resizeMode="cover" style={styles.image}>
+        {/* <View style={{ height: "5%", paddingTop: 10}}>
+          <Image source={require("../../../assets/images/logo.png")} resizeMode="contain" style={{ alignSelf: "center", width: 60, height: 60, marginLeft: 15 }} />
+        </View> */}
         <View style={styles.topSection}>
+
           {/* <View style={styles.titleSection}>
             <Text style={styles.titleText}>Bonjour, </Text>
             <Text style={styles.titleTextName}>{userName}</Text>
           </View> */}
-          {/* <View style={styles.visiteContainer}>
-          <Text style={styles.visitNumber}>0</Text>
-          <Text style={styles.visitText}>visite</Text>
+          {/* <View style={styles.daysContainer}>
+          <Text style={styles.textNumberDays}>0</Text>
+          <Text style={styles.textPersonDays}>visite</Text>
         </View> */}
           {/* <View style={styles.profilContainer}>
           <Text style={styles.profilTitle}>Profil complété à 50%</Text>
@@ -138,23 +159,28 @@ const Home = () => {
           <TouchableOpacity><Text style={styles.profilButton}>compléter</Text></TouchableOpacity>
         </View> */}
           <View style={styles.trafficLightContainer}>
-            <View>
-              <TrafficLight color={statut} />
+            <View style={styles.daysContainer}>
+              <View>
+                <Text style={styles.textNumberDays}>{colorLight === "rouge" ? `${days} jours` : "0 visite"} </Text>
+                {/* <Text style={styles.textDays}>jours</Text> */}
+              </View>
+              <View>
+                <Text style={styles.textPersonDays}>{colorLight === "rouge" ? `aux cotés de ${partenaire}` : "sur ton profil"} </Text>
+              </View>
+            </View>
+            <View style={{ maxHeight: '40%', width: "20%" }}>
+              <TrafficLight color={situation} />
             </View>
             {/* <View style={{ marginTop: 10 }}>
               <Text style={{ fontSize: 15 }}>En couple</Text>
             </View> */}
-            <View style={{alignItems:"center", justifyContent:"center", flexDirection:"column", gap:20}}>
+            <View style={{ alignItems: "center", justifyContent: "center", flexDirection: "column", gap: 20, minHeight: "25%" }}>
               <View>
-                <Text style={{ fontSize: 25, fontWeight: "700", textAlign: "center" }}>Tu es visible sous le statut 'feu {colorLight}'</Text>
+                <Text style={{ fontSize: 25, fontWeight: "700", textAlign: "center" }}>Jode {colorLight} visible</Text>
               </View>
               <View>
-                <Text style={{ fontSize: 15, fontWeight: "500", textAlign: "center", color: "#acaaaa" }}>Tes admirateurs pourront consulter ton statut en te recherchant via ton numéro de téléphone ou ton nom</Text>
+                <Text style={{ fontSize: 15, fontWeight: "400", textAlign: "center", color: "#898989" }}>On pourra te retrouver en recherchant ton numéro de téléphone ou ton nom complet</Text>
               </View>
-              {/* <View style={styles.visiteContainer}>
-                <Text style={styles.visitNumber}>0</Text>
-                <Text style={styles.visitText}>visite</Text>
-              </View> */}
             </View>
           </View>
         </View>
@@ -174,7 +200,7 @@ const Home = () => {
             </View>
             <FlatList
               data={listData}
-              ItemSeparatorComponent={() => <View style={{ height: 1, backgroundColor: '#000' }} />}
+              ItemSeparatorComponent={() => <View style={{ height: 0, backgroundColor: '#cdcdcd' }} />}
               keyExtractor={(item) => item.id.toString()}
               renderItem={({ item }) => (
                 <View style={{ flexDirection: "row", width: "100%", alignItems: "center", justifyContent: "space-around", marginVertical: 5, padding: 5, borderRadius: 20 }}>
@@ -196,7 +222,7 @@ const Home = () => {
               {image && <Image source={{ uri: image }} style={styles.avatar} />}
               {!image && <View style={styles.avatar} />}
             </TouchableOpacity>
-            <Text style={styles.statusText}>Statut visible</Text>
+            <Text style={styles.statusText}>situation visible</Text>
           </View>
           <View style={styles.iconNavRightContainer}>
             <TouchableOpacity onPress={() => router.navigate("demande")}>
@@ -281,7 +307,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingRight: 20,
-    backgroundColor: 'rgba(225, 225, 225, 1)',
+    backgroundColor: 'rgba(225, 225, 225, 0.8)',
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -289,8 +315,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.58,
     shadowRadius: 16.00,
-
-    elevation: 24,
   },
   avatar: {
     width: 50,
@@ -329,13 +353,12 @@ const styles = StyleSheet.create({
   },
   button: {
     alignSelf: 'center',
-    borderRadius: 30,
-    paddingHorizontal: 20,
-    // width: '90%',
+    borderRadius: 5,
+    paddingHorizontal: 10,
     marginVertical: 10,
     alignItems: 'center',
     backgroundColor: '#2F215F',
-    padding: 12,
+    padding: 9,
   },
   buttonText: {
     fontSize: 15,
@@ -347,7 +370,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: "100%",
-    height: '65%',
+    height: '60%',
   },
   bottomSection: {
     alignSelf: 'center',
@@ -355,44 +378,54 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
     borderRadius: 30,
     width: "95%",
-    height: '30%',
+    height: '35%',
+    borderWidth: 1,
+    borderColor: '#eeeeee',
     paddingBottom: "40%",
-    backgroundColor: 'rgba(255, 255, 255, 0.15)',
+    backgroundColor: 'rgba(255, 255, 255, 0.5)',
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: -4,
+      height: 0,
     },
     shadowOpacity: 0.4,
-    shadowRadius: 5.00,
-
-    elevation: 24,
+    shadowRadius: 0.5,
   },
-  visiteContainer: {
-    padding: 10,
-    width: '40%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    // backgroundColor: 'transparent',
+  daysContainer: {
+    // flexDirection: 'column',
+    // alignSelf: 'flex-end',
+    // position: 'absolute',
+    // margin: 25,
+    // padding: 10,
+    height: '15%',
+    // width: '90%',
+    // justifyContent: 'space-around',
+    // alignItems: 'center',
     borderRadius: 10,
+    // backgroundColor: 'rgba(255, 255, 255, 0.5)',
     // shadowColor: "#000",
     // shadowOffset: {
     //   width: 0,
-    //   height: -4,
+    //   height: 0,
     // },
-    // shadowOpacity: 0.58,
+    // shadowOpacity: 0.4,
     // shadowRadius: 5.00,
-
-    // elevation: 24,
   },
-  visitNumber: {
+  textNumberDays: {
     fontSize: 40,
+    fontWeight: 'bold',
+    // fontFamily: 'SpaceMono-Regular',
     color: '#000'
   },
-  visitText: {
+  textPersonDays: {
     fontSize: 15,
     color: '#747474',
     fontFamily: 'SpaceMono-Regular'
+  },
+  textDays: {
+    fontSize: 25,
+    fontWeight: 'bold',
+    color: '#000',
   },
   profilContainer: {
     width: '70%',

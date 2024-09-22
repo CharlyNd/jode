@@ -1,5 +1,5 @@
 import { Stack } from 'expo-router';
-
+import { Platform } from 'react-native';
 export default function Layout() {
   return (
     <Stack>
@@ -13,9 +13,11 @@ export default function Layout() {
       <Stack.Screen
         name="search"
         options={{
-          headerShown: false,
+          headerShown:  Platform.OS === 'android' ? true : false,
+          headerTitle: 'Recherche',
+          headerTitleAlign: 'center',
           // Set the presentation mode to modal for our modal route.
-          presentation: 'modal',
+          presentation: Platform.OS === 'android'?'card':'modal',
         }}
       />
       <Stack.Screen
