@@ -59,7 +59,6 @@ const Home = () => {
       .from('avatars')
       .download(`${User?.id}/avatar.png`)
       .then(({ data }) => {
-        // console.log(data);
         if (!data) return;
 
         const fr = new FileReader();
@@ -132,7 +131,6 @@ const Home = () => {
 
     const diffDays = Math.round(Math.abs((firstDate.getTime() - secondDate.getTime()) / oneDay));
     setDays(diffDays);
-    console.log(diffDays);
   }
 
 
@@ -174,12 +172,18 @@ const Home = () => {
             {/* <View style={{ marginTop: 10 }}>
               <Text style={{ fontSize: 15 }}>En couple</Text>
             </View> */}
-            <View style={{ alignItems: "center", justifyContent: "center", flexDirection: "column", gap: 20, minHeight: "25%" }}>
+            <View style={{ alignItems: "center", justifyContent: "center", flexDirection: "column", gap: 10, minHeight: "25%" }}>
               <View>
-                <Text style={{ fontSize: 25, fontWeight: "700", textAlign: "center" }}>Jode {colorLight} visible</Text>
+                <Text style={{ fontSize: 25, fontWeight: "500", textAlign: "center" }}>Jode {colorLight}</Text>
               </View>
-              <View>
+              {/* <View>
                 <Text style={{ fontSize: 15, fontWeight: "400", textAlign: "center", color: "#898989" }}>On pourra te retrouver en recherchant ton numéro de téléphone ou ton nom complet</Text>
+              </View> */}
+              <View>
+                <TouchableOpacity style={styles.buttonUpdateSitu}
+                  onPress={() => navigation.dispatch(DrawerActions.openDrawer())} >
+                  <Text style={styles.buttonTextUpdateSitu}>Mettre à jour</Text>
+                </TouchableOpacity>
               </View>
             </View>
           </View>
@@ -194,8 +198,8 @@ const Home = () => {
             </View>
             <View>
               <TouchableOpacity style={styles.button}
-                onPress={() => router.navigate('demande')} >
-                <Text style={styles.buttonText}>Créer un union sur la chaîne</Text>
+                onPress={() => router.navigate('(nft)')} >
+                <Text style={styles.buttonText}>Créer mon Union Digital</Text>
               </TouchableOpacity>
             </View>
             <FlatList
@@ -222,14 +226,14 @@ const Home = () => {
               {image && <Image source={{ uri: image }} style={styles.avatar} />}
               {!image && <View style={styles.avatar} />}
             </TouchableOpacity>
-            <Text style={styles.statusText}>situation visible</Text>
+            <Text style={styles.statusText}>visible</Text>
           </View>
           <View style={styles.iconNavRightContainer}>
-            <TouchableOpacity onPress={() => router.navigate("demande")}>
-              <MaterialCommunityIcons name="ring" size={30} color="#000" />
+            <TouchableOpacity onPress={() => router.navigate("(nft)")} style={{ backgroundColor: "#202020", padding: 8, borderRadius: 50 }}>
+              <MaterialCommunityIcons name="ring" size={30} color="#fff" />
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => router.navigate("search")}>
-              <Ionicons name="search" size={30} color="#000" />
+            <TouchableOpacity onPress={() => router.navigate("search")} style={{ backgroundColor: "#202020", padding: 8, borderRadius: 50 }}>
+              <Ionicons name="search" size={30} color="#fff" />
             </TouchableOpacity>
           </View>
         </View>
@@ -307,7 +311,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingRight: 20,
-    backgroundColor: 'rgba(225, 225, 225, 0.8)',
+    backgroundColor: 'rgba(0, 0, 0, 0.9)',
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -317,8 +321,8 @@ const styles = StyleSheet.create({
     shadowRadius: 16.00,
   },
   avatar: {
-    width: 50,
-    height: 50,
+    width: 40,
+    height: 40,
     backgroundColor: '#ccc',
     alignSelf: 'center',
     borderRadius: 100,
@@ -330,6 +334,10 @@ const styles = StyleSheet.create({
     gap: 30,
   },
   iconNavContainer: {
+    backgroundColor: "#202020",
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 50,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -339,8 +347,8 @@ const styles = StyleSheet.create({
   statusText: {
     fontSize: 15,
     textAlign: 'center',
-    color: '#000',
-    // fontFamily: 'Montserrat'
+    color: '#fff',
+    fontFamily: 'SpaceMono-Regular'
   },
   inputField: {
     marginVertical: 4,
@@ -353,17 +361,34 @@ const styles = StyleSheet.create({
   },
   button: {
     alignSelf: 'center',
-    borderRadius: 5,
-    paddingHorizontal: 10,
+    borderRadius: 25,
+    paddingHorizontal: 15,
     marginVertical: 10,
     alignItems: 'center',
     backgroundColor: '#2F215F',
     padding: 9,
   },
+  buttonUpdateSitu: {
+    alignSelf: 'center',
+    borderRadius: 25,
+    paddingHorizontal: 15,
+    marginVertical: 10,
+    alignItems: 'center',
+    backgroundColor: '#2F215F',
+    padding: 9,
+  },
+  buttonTextUpdateSitu: {
+    fontSize: 15,
+    textAlign: 'center',
+    color: '#fff',
+    fontWeight: '500',
+    // fontFamily: 'Montserrat'
+  },
   buttonText: {
     fontSize: 15,
     textAlign: 'center',
     color: '#fff',
+    fontWeight: '500',
     // fontFamily: 'Montserrat'
   },
   topSection: {
@@ -379,10 +404,10 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     width: "95%",
     height: '35%',
-    borderWidth: 1,
-    borderColor: '#eeeeee',
+    // borderWidth: 1,
+    // borderColor: '#eeeeee',
     paddingBottom: "40%",
-    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+    backgroundColor: 'rgba(255, 255, 255, 0.3)',
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -392,27 +417,16 @@ const styles = StyleSheet.create({
     shadowRadius: 0.5,
   },
   daysContainer: {
-    // flexDirection: 'column',
-    // alignSelf: 'flex-end',
-    // position: 'absolute',
-    // margin: 25,
-    // padding: 10,
-    height: '15%',
-    // width: '90%',
-    // justifyContent: 'space-around',
-    // alignItems: 'center',
+    backgroundColor: 'rgba(190, 190, 190, 0.3)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    // height: '15%',
     borderRadius: 10,
-    // backgroundColor: 'rgba(255, 255, 255, 0.5)',
-    // shadowColor: "#000",
-    // shadowOffset: {
-    //   width: 0,
-    //   height: 0,
-    // },
-    // shadowOpacity: 0.4,
-    // shadowRadius: 5.00,
   },
   textNumberDays: {
-    fontSize: 40,
+    fontSize: 30,
     fontWeight: 'bold',
     // fontFamily: 'SpaceMono-Regular',
     color: '#000'
@@ -423,7 +437,7 @@ const styles = StyleSheet.create({
     fontFamily: 'SpaceMono-Regular'
   },
   textDays: {
-    fontSize: 25,
+    fontSize: 20,
     fontWeight: 'bold',
     color: '#000',
   },

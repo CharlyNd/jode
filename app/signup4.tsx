@@ -36,7 +36,21 @@ const Signup = () => {
 
         const { error } = await supabase
             .from('users')
-            .insert({ name: name, email: email, prenom: prenom, birthday: date, userId: User?.id, phone: User?.phone, avatarUrl: url, situation: 'libre', showStatut: false, genre: genre });
+            .insert({ name: name, 
+                email: email, 
+                prenom: prenom, 
+                birthday: date, 
+                userId: User?.id, 
+                phone: User?.phone, 
+                avatarUrl: url, 
+                situation: 'libre', 
+                showStatut: false, 
+                genre: genre,
+                snapshat:"",
+                instagram:"",
+                snapVerified: false,
+                instaVerified: false,
+             });
 
         if (error) {
             console.log(error);

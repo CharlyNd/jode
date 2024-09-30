@@ -46,7 +46,7 @@ const intitialLayout = () => {
 
     if (session && !inAuthGroup) {
       if (session?.user?.user_metadata.phone_verified === true) {
-        router.replace('/(auth)');
+        router.replace('/(auth)/(tabs)');
       } else {
         router.replace('/signup');
       }

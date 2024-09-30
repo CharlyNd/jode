@@ -6,6 +6,8 @@ import { supabase } from '@/utils/supabase';
 import { Link, useNavigation } from 'expo-router';
 import { DrawerActions } from '@react-navigation/native';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+
 import TrafficLight from './TrafficLight';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from "moment";
@@ -25,7 +27,19 @@ export default function CustomDrawerContent(props: any) {
     const [dateFormatted, setDateFormated] = useState('');
     const [mode, setMode] = useState<'date' | 'datetime' | 'time'>('date');
     const [datePickerVisible, setDatePickerVisible] = useState(Platform.OS === "android" ? false : true);
+    const [snapshat, setSnapshat] = useState('');
+    const [oldInsta, setOldInsta] = useState('cend');
+    const [oldSnap, setOldSnap] = useState('cend');
+    const [instagram, setInstagram] = useState('');
+    const [codeInsta, setCodeInsta] = useState('');
+    const [codeSnap, setCodeSnap] = useState('');
+    const [newCodeSnap, setNewCodeSnap] = useState('');
+    const [newCodeInsta, setNewCodeInsta] = useState('');
     const [prenom, setPrenom] = useState('');
+    const [instagramVisible, setInstagramVisible] = useState(false);
+    const [snapshatVisible, setSnapshatVisible] = useState(false);
+    const [snapVerified, setSnapVerified] = useState(true);
+    const [instaVerified, setInstaVerified] = useState(false);
 
     useEffect(() => {
         loadUserAvatar();
@@ -65,6 +79,10 @@ export default function CustomDrawerContent(props: any) {
 
             setDate(test);
             setPrenom(data[0].prenomPartenaire);
+            setInstagram(data[0].instagram);
+            setSnapshat(data[0].snapchat);
+            setInstaVerified(data[0].instaVerified);
+            setSnapVerified(data[0].snapVerified);
             setHideStatus(data[0].showStatut);
             switch (data[0].situation) {
                 case "celibataire":
@@ -86,7 +104,6 @@ export default function CustomDrawerContent(props: any) {
             }
         }
     };
-
 
     const loadUserAvatar = async () => {
         const {
@@ -149,6 +166,70 @@ export default function CustomDrawerContent(props: any) {
         Alert.alert("Votre partenaire a bien été enregistré");
     };
 
+    const updateInstagram = async () => {
+        const {
+            data: { user: User },
+        } = await supabase.auth.getUser();
+
+        const { error } = await supabase
+            .from('users')
+            .update({
+                instagram: instagram,
+            })
+            .eq('userId', User?.id);
+
+        console.log(error);
+        Alert.alert("Ton Instagram a bien été enregistré");
+    };
+
+    const updateInstaVerified = async () => {
+        const {
+            data: { user: User },
+        } = await supabase.auth.getUser();
+
+        const { error } = await supabase
+            .from('users')
+            .update({
+                instaVerified: true,
+            })
+            .eq('userId', User?.id);
+
+        console.log(error);
+        Alert.alert("Ton Insta a bien été vérifié 🥳");
+    }
+
+    const updateSnapVerified = async () => {
+        const {
+            data: { user: User },
+        } = await supabase.auth.getUser();
+
+        const { error } = await supabase
+            .from('users')
+            .update({
+                snapVerified: true,
+            })
+            .eq('userId', User?.id);
+
+        console.log(error);
+        Alert.alert("Ton Snap a bien été vérifié 🥳");
+    }
+
+    const updateSnapshat = async () => {
+        const {
+            data: { user: User },
+        } = await supabase.auth.getUser();
+
+        const { error } = await supabase
+            .from('users')
+            .update({
+                snapchat: snapshat,
+            })
+            .eq('userId', User?.id);
+
+        console.log(error);
+        Alert.alert("Ton Snapchat a bien été enregistré");
+    };
+
     const updateSituation = async (newSituation: string) => {
         const {
             data: { user: User },
@@ -200,9 +281,18 @@ export default function CustomDrawerContent(props: any) {
                         </TouchableOpacity>
                     </View>
                     <View style={styles.settingsContainer}>
-                        <Text style={styles.containerTitle}>Recherche et visibilité</Text>
+                        <View style={styles.containerTitleVisibility}>
+                            <View>
+                                <Text style={styles.containerTitle}>Recherche et visibilité</Text>
+                            </View>
+                            <View style={{
+                                backgroundColor: hideStatus ? "#3fb57e" : "#bb3838", borderRadius: 50, paddingHorizontal: 10, paddingVertical: 3
+                            }}>
+                                <Text style={{ color: hideStatus ? "#000" : "#FFF", fontSize: 12 }}>{hideStatus ? "activée" : "désactivée"}</Text>
+                            </View>
+                        </View>
                         <View style={styles.optionSettingsRow}>
-                            <Text style={!hideStatus ? styles.statusTextInactive : styles.statusTextActive}>Visible</Text>
+                            <Text style={!hideStatus ? styles.statusTextInactive : styles.statusTextActive}>visible</Text>
                             <Switch
                                 trackColor={{ false: '#cacaca', true: '#2F215F' }}
                                 thumbColor={!hideStatus ? '#e1e1e1' : '#e1e1e1'}
@@ -211,7 +301,7 @@ export default function CustomDrawerContent(props: any) {
                                 value={!hideStatus}
                                 style={{ transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }] }}
                             />
-                            <Text style={!hideStatus ? styles.statusTextActive : styles.statusTextInactive}>Masqué</Text>
+                            <Text style={!hideStatus ? styles.statusTextActive : styles.statusTextInactive}>masqué</Text>
                         </View>
                         <View style={styles.optionSettingsRow}>
                             <Text style={styles.text}>Nom et Prénom</Text>
@@ -238,19 +328,145 @@ export default function CustomDrawerContent(props: any) {
                             />
                         </View>
                         <View style={styles.optionSettingsRow}>
-                            <Text style={styles.text}>Recherche</Text>
-                            <View style={{
-                                backgroundColor: hideStatus ? "#3fb57e" : "#c60000", borderRadius: 50, paddingHorizontal: 10, paddingVertical: 3, shadowColor: hideStatus ? "#3fb57e" : "#c60000",
-                                shadowOffset: {
-                                    width: 0,
-                                    height: 0,
-                                },
-                                shadowOpacity: 0.8,
-                                shadowRadius: 1.00,
-                            }}>
-                                <Text style={{ color: "#fff", fontFamily: "SpaceMono-Regular", fontSize: 12 }}>{!hideStatus ? "activée" : "désactivée"}</Text>
+                            <View style={styles.socialContainer}>
+                                {oldInsta === "" && (<Text style={styles.text}>Instagram</Text>)}
+                                <Ionicons name="logo-instagram" size={20} color="black" />
+                                {oldInsta !== "" ?
+                                    <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
+                                        <Text style={{ color: '#2F215F', fontSize: 14 }}>@{oldInsta}</Text>
+                                        <View style={{
+                                            backgroundColor: instaVerified ? "#3fb57e" : "#bb3838", borderRadius: 50, paddingHorizontal: 10, paddingVertical: 3
+                                        }}>
+                                            <Text style={{ color: instaVerified ? "#000" : "#FFF", fontSize: 11 }}>{instaVerified ? "vérifié" : "non vérifié"}</Text>
+                                        </View>
+                                    </View> : null}
+
                             </View>
+                            <TouchableOpacity onPress={() => { setInstagramVisible(!instagramVisible) }} style={!instagramVisible ? styles.buttonSocial : styles.buttonSocialActive}>
+                                <Text style={{ color: !instagramVisible ? '#fff' : '#2F215F', fontSize: 12 }}>{oldInsta === "" ? (!instagramVisible ? "Ajouter" : "Fermer") : (!instaVerified ? "Vérifier" : "Modifier")}</Text>
+                            </TouchableOpacity>
                         </View>
+
+                        {instagramVisible && (
+                            <View>
+                                {(oldInsta !== "" && !instaVerified) && (
+                                    <View style={{ flexDirection: "row", alignItems: "center", gap: 10, marginTop: 10 }}>
+                                        <TextInput
+                                            autoCapitalize="none"
+                                            placeholder="code reçu"
+                                            placeholderTextColor={"#808080"}
+                                            value={newCodeInsta}
+                                            onChangeText={setNewCodeInsta}
+                                            style={styles.inputFieldSocial}
+                                        />
+                                        <TouchableOpacity onPress={() => { updateInstaVerified() }} style={newCodeInsta !== "" ? styles.buttonSocial : styles.buttonSocialDisabled}>
+                                            <Text style={{ color: '#fff', fontSize: 12 }}>  Vérifier le code</Text>
+                                        </TouchableOpacity>
+                                    </View>)}
+                                <View style={{ flexDirection: "row", alignItems: "center", gap: 10, marginVertical: 20 }}>
+                                    <Text style={styles.text}>@</Text>
+                                    <TextInput
+                                        autoCapitalize="none"
+                                        placeholder={oldInsta !== "" ? oldInsta : "ton_insta"}
+                                        placeholderTextColor={"#808080"}
+                                        value={instagram}
+                                        onChangeText={setInstagram}
+                                        style={styles.inputFieldSocial}
+                                    />
+                                    <TouchableOpacity onPress={() => { updateInstagram() }} style={instagram !== "" ? styles.buttonSocial : styles.buttonSocialDisabled}>
+                                        <Text style={{ color: '#fff', fontSize: 12 }}>modifier</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                        )}
+
+                        <View style={styles.optionSettingsRow}>
+                            <View style={styles.socialContainer}>
+                                {oldSnap === "" && (<Text style={styles.text}>Snapshat</Text>)}
+                                <MaterialIcons name="snapchat" size={20} color="black" />
+                                {oldSnap !== "" ?
+                                    <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
+                                        <Text style={{ color: '#2F215F', fontSize: 14 }}>@{oldSnap}</Text>
+                                        <View style={{
+                                            backgroundColor: snapVerified ? "#3fb57e" : "#bb3838", borderRadius: 50, paddingHorizontal: 10, paddingVertical: 3
+                                        }}>
+                                            <Text style={{ color: snapVerified ? "#000" : "#FFF", fontSize: 11 }}>{snapVerified ? "vérifié" : "non vérifié"}</Text>
+                                        </View>
+                                    </View> : null}
+
+                            </View>
+                            <TouchableOpacity onPress={() => { setSnapshatVisible(!snapshatVisible) }} style={!snapshatVisible ? styles.buttonSocial : styles.buttonSocialActive}>
+                                <Text style={{ color: !snapshatVisible ? '#fff' : '#2F215F', fontSize: 12 }}>{oldSnap === "" ? (!snapshatVisible ? "Ajouter" : "Fermer") : (!snapVerified ? "Vérifier" : "Modifier")}</Text>
+                            </TouchableOpacity>
+                        </View>
+
+                        {snapshatVisible && (
+                            <View>
+                                {(oldSnap !== "" && !snapVerified) && (
+                                    <View style={{ flexDirection: "row", alignItems: "center", gap: 10, marginTop: 10 }}>
+                                        <TextInput
+                                            autoCapitalize="none"
+                                            placeholder="code reçu"
+                                            placeholderTextColor={"#808080"}
+                                            value={codeSnap}
+                                            onChangeText={setCodeSnap}
+                                            style={styles.inputFieldSocial}
+                                        />
+                                        <TouchableOpacity onPress={() => { updateSnapVerified() }} style={codeSnap !== "" ? styles.buttonSocial : styles.buttonSocialDisabled}>
+                                            <Text style={{ color: '#fff', fontSize: 12 }}>  Vérifier le code</Text>
+                                        </TouchableOpacity>
+                                    </View>)}
+                                <View style={{ flexDirection: "row", alignItems: "center", gap: 10, marginVertical: 20 }}>
+                                    <Text style={styles.text}>@</Text>
+                                    <TextInput
+                                        autoCapitalize="none"
+                                        placeholder={oldSnap !== "" ? oldSnap : "ton_snap"}
+                                        placeholderTextColor={"#808080"}
+                                        value={snapshat}
+                                        onChangeText={setSnapshat}
+                                        style={styles.inputFieldSocial}
+                                    />
+                                    <TouchableOpacity onPress={() => { updateSnapshat() }} style={snapshat !== "" ? styles.buttonSocial : styles.buttonSocialDisabled}>
+                                        <Text style={{ color: '#fff', fontSize: 12 }}>modifier</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                        )}
+
+
+                        {/* {snapshatVisible && (
+                            <View>
+                                {snapshat !== "" && (
+                                    <View style={{ flexDirection: "row", alignItems: "center", gap: 10, marginTop: 10 }}>
+                                        <TextInput
+                                            autoCapitalize="none"
+                                            placeholder="code reçu"
+                                            placeholderTextColor={"#808080"}
+                                            value={code}
+                                            onChangeText={setCode}
+                                            style={code !== "" ? styles.inputFieldSocial : styles.inputFieldSocialError}
+                                        />
+                                        <TouchableOpacity onPress={() => { updateSnapVerified() }} style={code !== "" ? styles.buttonSocial : styles.buttonSocialDisabled}>
+                                            <Text style={{ color: '#fff', fontSize: 12 }}>  Vérifier le code</Text>
+                                        </TouchableOpacity>
+                                    </View>)}
+                                <View style={{ flexDirection: "row", alignItems: "center", gap: 10, marginVertical: 20 }}>
+                                    <Text style={styles.text}>@</Text>
+                                    <TextInput
+                                        autoCapitalize="none"
+                                        placeholder={snapshat !== "" ? snapshat : "ton_snap"}
+                                        placeholderTextColor={"#808080"}
+                                        value={snapshat}
+                                        onChangeText={setSnapshat}
+                                        style={snapshat !== "" ? styles.inputFieldSocial : styles.inputFieldSocialError}
+                                    />
+                                    <TouchableOpacity onPress={() => { updateSnapshat() }} style={snapshat !== "" ? styles.buttonSocial : styles.buttonSocialDisabled}>
+                                        <Text style={{ color: '#fff', fontSize: 12 }}>modifier</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                        )} */}
+
                     </View>
                     <View style={styles.statusContainer}>
                         <Text style={styles.containerTitle}>Ma situation</Text>
@@ -380,6 +596,37 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         marginTop: 20,
     },
+    buttonSocial: {
+        alignItems: 'center',
+        backgroundColor: '#2F215F',
+        paddingHorizontal: 15,
+        paddingVertical: 5,
+        borderRadius: 5,
+        marginTop: 5,
+    },
+    buttonSocialActive: {
+        alignItems: 'center',
+        borderWidth: 1,
+        borderColor: '#2F215F',
+        paddingHorizontal: 15,
+        paddingVertical: 5,
+        borderRadius: 5,
+        marginTop: 5,
+    },
+    buttonSocialDisabled: {
+        alignItems: 'center',
+        backgroundColor: '#a1a1a1',
+        paddingHorizontal: 15,
+        paddingVertical: 5,
+        borderRadius: 5,
+        marginTop: 5,
+    },
+    containerTitleVisibility: {
+        flexDirection: 'row',
+        gap: 10,
+        alignItems: 'center',
+        marginBottom: 15
+    },
     avatar: {
         width: 125,
         height: 125,
@@ -456,11 +703,16 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.58,
         shadowRadius: 16.00,
     },
+    socialContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 10
+    },
     containerTitle: {
         fontSize: 18,
         textAlign: 'center',
         color: '#000',
-        marginBottom: 15
+        // marginBottom: 15
     },
     optionSettingsRow: {
         flexDirection: 'row',
@@ -507,6 +759,28 @@ const styles = StyleSheet.create({
         color: '#000',
         borderWidth: 1,
         borderColor: '#54b8b3',
+        zIndex: 0,
+    },
+    inputFieldSocial: {
+        minWidth: '40%',
+        // height: 30,
+        borderRadius: 15,
+        fontSize: 16,
+        padding: 10,
+        color: '#000',
+        borderWidth: 1,
+        borderColor: '#54b8b3',
+        zIndex: 0,
+    },
+    inputFieldSocialError: {
+        minWidth: '40%',
+        height: 30,
+        borderRadius: 10,
+        fontSize: 16,
+        padding: 10,
+        color: '#000',
+        borderWidth: 1,
+        borderColor: '#b2004d',
         zIndex: 0,
     },
     inputFieldError: {

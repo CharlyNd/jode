@@ -7,9 +7,15 @@ const height = Dimensions.get("window").height;
 const TrafficLight = (props: any) => {
   return (
     <View style={styles.container}>
-      <View style={[styles.light, props.color === "couple" ? styles.redLight : null]} />
-      <View style={[styles.light, props.color === "libre" ? styles.yellowLight : null]} />
-      <View style={[styles.light, props.color === "celibataire" ? styles.greenLight : null]} />
+      <View style={styles.backgroundLight}>
+        <View style={[styles.light, props.color === "couple" ? styles.redLight : null]} />
+      </View>
+      <View style={styles.backgroundLight}>
+        <View style={[styles.light, props.color === "libre" ? styles.yellowLight : null]} />
+      </View>
+      <View style={styles.backgroundLight}>
+        <View style={[styles.light, props.color === "celibataire" ? styles.greenLight : null]} />
+      </View>
     </View>
   );
 };
@@ -18,7 +24,7 @@ const styles = StyleSheet.create({
   container: {
     width: "100%",
     height: "100%",
-    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+    backgroundColor: 'rgba(0, 0, 0, 0.9)',
     borderBottomRightRadius: 40,
     borderBottomLeftRadius: 40,
     borderTopLeftRadius: 10,
@@ -34,11 +40,21 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.58,
     shadowRadius: 3.00,
   },
+  backgroundLight: {
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    width: "200%",
+    height: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    borderBottomLeftRadius: 70,
+    borderBottomRightRadius: 70
+  },
   light: {
+    zIndex: 1,
     width: width * 0.08,
     height: width * 0.08,
     borderRadius: 30,
-    backgroundColor: '#7a7a7a',
+    backgroundColor: 'rgba(150, 150, 150, 0.4)',
   },
   redLight: {
     backgroundColor: '#c60000',

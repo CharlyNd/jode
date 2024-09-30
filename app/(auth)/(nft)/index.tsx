@@ -1,4 +1,4 @@
-import { View, Text, TextInput, StyleSheet, SafeAreaView, Image, ActivityIndicator, ScrollView, Alert, Button, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, StyleSheet, SafeAreaView, Image, Platform, ActivityIndicator, ScrollView, Alert, Button, TouchableOpacity } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import Feather from '@expo/vector-icons/Feather';
@@ -14,14 +14,13 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { GooglePlaceDetail, GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import Entypo from '@expo/vector-icons/Entypo';
 import ApiKeys from '@/constants/ApiKeys';
+import moment from "moment";
+import "moment/locale/fr";
 
-
-export default function Demande() {
+export default function index() {
 
     const googleKey = ApiKeys.googleApiKey.googleKey;
 
-    const [voeux, setVoeux] = useState('');
-    const [demande, setDemande] = useState(false)
     interface User {
         adresse: Lieu | null;
         name: string;
@@ -48,28 +47,39 @@ export default function Demande() {
     const [loading, setLoading] = useState(false);
     const [imgUrl, setImgUrl] = useState('');
     const [data, setData] = useState<any | null>(null);
-
     const [date, setDate] = useState(new Date());
     const [dateSelected, setDateSelected] = useState(undefined);
+    const [dateFormatted, setDateFormated] = useState('');
     const [mode, setMode] = useState<'date' | 'datetime' | 'time'>('date');
-
+    const [datePickerVisible, setDatePickerVisible] = useState(Platform.OS === "android" ? false : true);
+    const [phone, setPhone] = useState('');
     const [lieuRencontre, setLieuRencontre] = useState<Lieu | null>(null);
-
     const [adresse, setAdresse] = useState<Lieu | null>(null);
+    const [voeux, setVoeux] = useState('');
+    const [prenom, setPrenom] = useState('');
+    const [demande, setDemande] = useState(false)
+
+    useEffect(() => {
+        // setLoading(true);
+        // loadUser();
+        // loadDemande().then(() => loadDemandeImage());
+    }, []);
 
 
     const onChange = (event: any, selectedDate: any) => {
         const currentDate = selectedDate;
+        if (Platform.OS === 'android') {
+            setDatePickerVisible(false);
+        }
         setDate(currentDate);
-        setDateSelected(currentDate);
+        setDateSelected(currentDate.toISOString());
+        let dateFormat = (moment(currentDate).format('dddd D MMMM YYYY'))
+        setDateFormated(dateFormat);
     };
 
-    useEffect(() => {
-        // setLoading(true);
-        loadUser();
-        // loadDemande().then(() => loadDemandeImage());
-    }, []);
-
+    const showDatePicker = () => {
+        setDatePickerVisible(true);
+    };
     const getAvatarUrl = async (User: string) => {
         const { data: { publicUrl } } = await supabase.storage.from('demandes')
             .getPublicUrl(`${User}/demande.png`)
@@ -163,10 +173,10 @@ export default function Demande() {
             createNft(result);
             setImgUrl(result);
         })
-        .then(() => {
-            // loadDemande()
-            setLoading(false);
-        })
+            .then(() => {
+                // loadDemande()
+                setLoading(false);
+            })
         // .then(() => {
         //     setLoading(false);
         //     setDemande(true);
@@ -216,19 +226,48 @@ export default function Demande() {
             <View style={styles.formContainer}>
                 <View style={styles.containerTop}>
                     <TouchableOpacity
-                        onPress={() => router.replace('/(auth)')} >
-                        <Ionicons name="chevron-back-sharp" size={30} color="black" />
+                        onPress={() => router.navigate('/(auth)/(tabs)')} >
+                        <Ionicons name="close" size={35} color="#fff" />
                     </TouchableOpacity>
-                    <Text style={styles.title}>Notre NFT</Text>
+                    <Text style={styles.title}>NFT Union Digital</Text>
                 </View>
                 <View style={styles.containerLocationInput}>
+                    <View style={{ flexDirection: "row", width: "90%", alignItems: "center" }}>
+                        {/* <View>
+                            <Text style={styles.inputTitle}>Prénom du Partenaire</Text>
+                        </View> */}
+                        <View style={{ flexDirection: "row", alignItems: "center" }}>
+                            <Ionicons name="person-outline" size={18} color={prenom === '' ? "#8b9fb3" : "#ccff33"} />
+                            <TextInput
+                                style={styles.input}
+                                placeholder="Prénom partenaire"
+                                value={prenom}
+                                onChangeText={setPrenom}
+                                placeholderTextColor={"#9f9f9f"}
+                            />
+                        </View>
+                        {/* <View>
+                            <Text style={styles.inputTitle}>Prénom du Partenaire</Text>
+                        </View> */}
+                        <View style={{ flexDirection: "row", alignItems: "center" }}>
+                            <Ionicons name="call-outline" size={18} color={phone === '' ? "#8b9fb3" : "#ccff33"} />
+                            <TextInput
+                                style={styles.input}
+                                placeholder="Son numéro de téléphone"
+                                value={phone}
+                                onChangeText={setPhone}
+                                placeholderTextColor={"#9f9f9f"}
+                                keyboardType='phone-pad'
+                            />
+                        </View>
+                    </View>
                     <View style={styles.inputContainer}>
-                        <Text style={styles.inputTitle}>Lieu de votre rencontre *</Text>
+                        {/* <Text style={styles.inputTitle}>Lieu de votre rencontre *</Text> */}
                         <View style={{ flexDirection: "row", alignItems: "center", width: "85%" }}>
-                            <Ionicons name={lieuRencontre === null ? "location-outline" : "location"} size={21} color={lieuRencontre === null ? "#8b9fb3" : "#63cd78"} />
+                            <Ionicons name={lieuRencontre === null ? "location-outline" : "location"} size={21} color={lieuRencontre === null ? "#8b9fb3" : "#ccff33"} />
 
                             <GooglePlacesAutocomplete
-                                placeholder="Ville ou adresse"
+                                placeholder="Le lieu de votre rencontre"
                                 onPress={(data, details = null) => {
                                     setLieuRencontre({ adressName: details?.formatted_address, coords: details?.geometry.location, ville: details?.vicinity ? details?.vicinity : "" });
                                     console.log(typeof (details?.vicinity));
@@ -236,8 +275,9 @@ export default function Demande() {
                                 enablePoweredByContainer={false}
                                 // suppressDefaultStyles
                                 textInputProps={{
-                                    placeholderTextColor: "#C2D4E1",
-                                    fontSize: 17
+                                    placeholderTextColor: "#9f9f9f",
+                                    fontSize: 15,
+                                    color: "#ccff33"
                                 }}
                                 currentLocation={false}
                                 currentLocationLabel='Current location'
@@ -261,57 +301,101 @@ export default function Demande() {
                             />
                         </View>
                     </View>
-                    {user && user.adresse === null ?
-                        <View style={styles.inputContainer}>
-                            <Text style={styles.inputTitle}>Ta ville</Text>
-                            <View style={{ flexDirection: "row", alignItems: "center", width: "85%" }}>
-                                <Ionicons name={adresse === null ? "location-outline" : "location"} size={21} color={adresse === null ? "#8b9fb3" : "#63cd78"} />
-                                <GooglePlacesAutocomplete
-                                    placeholder="Ville ou adresse"
-                                    onPress={(data, details = null) => {
-                                        setAdresse({ adressName: details?.formatted_address, coords: details?.geometry.location, ville: details?.vicinity ? details?.vicinity : "" });
-                                    }}
-                                    enablePoweredByContainer={false}
-                                    // suppressDefaultStyles
-                                    textInputProps={{
-                                        placeholderTextColor: "#C2D4E1",
-                                        fontSize: 17
-                                    }}
-                                    currentLocation={false}
-                                    currentLocationLabel='Current location'
-                                    styles={{
-                                        textInput: styles.textInput,
-                                        container: styles.autocompleteContainer,
-                                        listView: styles.listView,
-                                        separator: styles.separator,
-                                    }}
-                                    fetchDetails
-                                    query={{
-                                        key: googleKey,
-                                        language: "fr",
-                                        components: "country:fr",
-                                        location: "48.817223, 1.949075",
-                                        radius: "800000", //800 km
-                                        strictbounds: true,
-                                    }}
-                                // renderRow={(data) => <PlaceRow data={data} />}
-                                // renderDescription={(data) => data.description || data.vicinity}
+                    {/* {user && user.adresse === null ? */}
+                    <View style={styles.inputContainer}>
+                        {/* <Text style={styles.inputTitle}>Ta ville</Text> */}
+                        <View style={{ flexDirection: "row", alignItems: "center", width: "85%" }}>
+                            <Ionicons name={adresse === null ? "location-outline" : "location"} size={21} color={adresse === null ? "#8b9fb3" : "#ccff33"} />
+                            <GooglePlacesAutocomplete
+                                placeholder="Quelle est ta ville de résidence ?"
+                                onPress={(data, details = null) => {
+                                    setAdresse({ adressName: details?.formatted_address, coords: details?.geometry.location, ville: details?.vicinity ? details?.vicinity : "" });
+                                }}
+                                enablePoweredByContainer={false}
+                                // suppressDefaultStyles
+                                textInputProps={{
+                                    placeholderTextColor: "#9f9f9f",
+                                    fontSize: 15,
+                                    color: "#ccff33"
+                                }}
+                                currentLocation={false}
+                                currentLocationLabel='Current location'
+                                styles={{
+                                    textInput: styles.textInput,
+                                    container: styles.autocompleteContainer,
+                                    listView: styles.listView,
+                                    separator: styles.separator,
+                                }}
+                                fetchDetails
+                                query={{
+                                    key: googleKey,
+                                    language: "fr",
+                                    components: "country:fr",
+                                    location: "48.817223, 1.949075",
+                                    radius: "800000", //800 km
+                                    strictbounds: true,
+                                }}
+                            // renderRow={(data) => <PlaceRow data={data} />}
+                            // renderDescription={(data) => data.description || data.vicinity}
+                            />
+                        </View>
+                    </View>
+                    {/* : null} */}
+                </View>
+                <ScrollView style={styles.bottomForm} contentContainerStyle={{ flexGrow: 1 }} automaticallyAdjustKeyboardInsets scrollEnabled={true} showsVerticalScrollIndicator={false}>
+                    <View style={styles.containerNewDemande}>
+                        <View style={{ display: showNext ? "none" : "flex" }}>
+                            <View style={styles.inputContainer}>
+                                <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
+                                    <Ionicons name={dateSelected === undefined ? "calendar-outline" : "calendar"} size={21} color={dateSelected === undefined ? "#8b9fb3" : "#ccff33"} />
+                                    <Text style={styles.inputTitle}>Date de votre rencontre</Text>
+                                </View>
+                                <View style={{ alignItems: "center", marginTop: 10 }}>
+                                    {Platform.OS === 'android' && (
+                                        <TouchableOpacity onPress={showDatePicker} style={styles.buttonDate}>
+                                            <Text style={{ fontSize: 15, fontFamily: "SpaceMono-Regular", color: "#fff" }}>
+                                                {dateFormatted !== "" ? dateFormatted : 'Choisir la date'}
+                                            </Text>
+                                        </TouchableOpacity>)}
+                                    {datePickerVisible && (
+                                        <DateTimePicker
+                                            testID="dateTimePicker"
+                                            value={date}
+                                            mode={mode}
+                                            onChange={onChange}
+                                            locale='fr'
+                                        />)}
+                                </View>
+                            </View>
+
+                            <View style={styles.inputContainerVoeux}>
+                                <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", marginBottom: 10 }}>
+                                    <Entypo name="new-message" size={21} color={voeux === '' ? "#8b9fb3" : "#ccff33"} />
+                                    <Text style={styles.inputTitle}>Ton voeu d'engagement</Text>
+                                    {/* <Text style={styles.imageSubTitle}>Écris le message qui durera pour toujours...</Text> */}
+                                </View>
+                                <TextInput
+                                    style={styles.inputVoeux}
+                                    placeholder="Écris le message qui durera pour toujours..."
+                                    multiline
+                                    value={voeux}
+                                    onChangeText={setVoeux}
+                                    placeholderTextColor={"#9f9f9f"}
                                 />
                             </View>
-                        </View> : null}
-                </View>
-                <ScrollView style={styles.bottomForm}>
-                    <View style={{ flexDirection: "row", gap: 5 }}>
-                        <Ionicons name={image === null ? "image-outline" : "image"} size={21} color={image === null ? "#8b9fb3" : "#63cd78"} />
+                        </View>
+                    </View>
+                    <View style={{ flexDirection: "row", gap: 5, justifyContent: "center" }}>
+                        <Ionicons name={image === null ? "image-outline" : "image"} size={21} color={image === null ? "#8b9fb3" : "#ccff33"} />
                         <View style={{ alignItems: "center" }}>
-                            <Text style={styles.imageTitle}>Ajoute une image qui représente ta demande</Text>
-                            <Text style={styles.imageSubTitle}>Tu pourras la modifier si vous n'êtes pas d'accord</Text>
+                            <Text style={styles.imageTitle}>Photo qui représente ta demande</Text>
+                            {/* <Text style={styles.imageSubTitle}>Tu pourras la modifier si vous n'êtes pas d'accord</Text> */}
                         </View>
                     </View>
                     {image && <TouchableOpacity onPress={pickImage}>
                         <Image source={{ uri: image }} style={styles.avatar} />
                         <View style={styles.editButtonContainer}>
-                            <Image source={require("../../../assets/images/edit.png")} style={styles.editButtonStyle} />
+                            <Ionicons name="add-circle-outline" size={40} color="#ccff33" />
                         </View>
                     </TouchableOpacity>}
                     {!image &&
@@ -320,47 +404,11 @@ export default function Demande() {
                                 <FontAwesome5 name="images" size={50} color="#c5c5c5" />
                             </View>
                             <View style={styles.editButtonContainer}>
-                                <Image source={require("../../../assets/images/edit.png")} style={styles.editButtonStyle} />
+                                <Ionicons name="add-circle-outline" size={40} color="#ccff33" />
                             </View>
                         </TouchableOpacity>}
-                    <View style={styles.containerNewDemande}>
-                        <View style={{ display: showNext ? "none" : "flex" }}>
-                            <View style={styles.inputContainer}>
-                                <View style={{ flexDirection: "row" }}>
-                                    <Ionicons name={dateSelected === undefined ? "calendar-outline" : "calendar"} size={21} color={dateSelected === undefined ? "#8b9fb3" : "#63cd78"} />
-                                    <Text style={styles.inputTitle}>Date de votre rencontre *</Text>
-                                </View>
-                                <View style={{ alignItems: "center", marginTop: 10 }}>
-                                    <DateTimePicker
-                                        testID="dateTimePicker"
-                                        value={date}
-                                        mode={mode}
-                                        onChange={onChange}
-                                        locale='fr'
-                                    />
-                                </View>
-                            </View>
-
-                            <View style={styles.inputContainerVoeux}>
-                                <View style={{ flexDirection: "row", alignItems: "center" }}>
-                                    <Entypo name="new-message" size={21} color={voeux === '' ? "#8b9fb3" : "#63cd78"} />
-                                    <View>
-                                        <Text style={styles.inputTitle}>Ton voeu d'engagement *</Text>
-                                        <Text style={styles.imageSubTitle}>Écris le message qui durera pour toujours...</Text>
-                                    </View>
-                                </View>
-                                <TextInput
-                                    style={styles.inputVoeux}
-                                    placeholder="Je m'engage à..."
-                                    multiline
-                                    value={voeux}
-                                    onChangeText={setVoeux}
-                                />
-                            </View>
-                        </View>
-                    </View>
                 </ScrollView>
-                <TouchableOpacity style={voeux !== "" && dateSelected !== undefined && lieuRencontre !== null ? styles.button : styles.buttonDisable} disabled={voeux === "" && dateSelected === undefined && lieuRencontre === null && (adresse === null && user?.adresse === null)}
+                <TouchableOpacity style={voeux !== "" && prenom !== "" && phone !== "" && dateSelected !== undefined && lieuRencontre !== null ? styles.button : styles.buttonDisable} disabled={voeux === "" && prenom !== "" && phone !== "" && dateSelected === undefined && lieuRencontre === null && (adresse === null && user?.adresse === null)}
                     // onPress={() => image === null ? Alert.alert("Attention", "Es-tu sure de vouloir continuer sans image ?", [
                     //     {
                     //         text: 'Non, je veux ajouter une image',
@@ -369,9 +417,9 @@ export default function Demande() {
                     //     },
                     //     { text: 'Oui, je continue', onPress: () => setShowNext(!showNext) },
                     // ]) : setShowNext(!showNext)} 
-                    onPress={() => validateImage()} 
-                    >
-                    <Text style={styles.buttonText}>Valider mon engagement</Text>
+                    onPress={() => validateImage()}
+                >
+                    <Text style={voeux !== "" && prenom !== "" && phone !== "" && dateSelected !== undefined && lieuRencontre !== null ? styles.buttonText : styles.buttonTextDisabled}>Valider mon engagement</Text>
                 </TouchableOpacity>
             </View>
             {/* } */}
@@ -382,13 +430,16 @@ export default function Demande() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        height: "100%",
-        backgroundColor: "#faf7f7",
+        height: "95%",
+        backgroundColor: 'rgba(0, 0, 0, 0.95)',
     },
     bottomForm: {
-        marginTop: 30,
+        width: "100%",
+        marginTop: 0,
     },
     containerTop: {
+        width: "90%",
+        marginTop: 20,
         alignItems: 'center',
         flexDirection: "row",
         justifyContent: "space-between",
@@ -398,7 +449,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         borderRadius: 20,
         alignItems: 'center',
-        backgroundColor: "#faf7f7"
+        // backgroundColor: 'rgba(0, 0, 0, 0.9)',
     },
     questionButtonContainer: {
         flexDirection: "row",
@@ -406,17 +457,28 @@ const styles = StyleSheet.create({
         alignItems: "center",
         gap: 20
     },
+    buttonDate: {
+        alignItems: 'center',
+        // backgroundColor: '#2F215F',
+        paddingHorizontal: 15,
+        paddingVertical: 8,
+        borderRadius: 5,
+        borderWidth: 0.5,
+        borderColor: "#ccff33",
+    },
     avatar: {
         width: "70%",
         height: 150,
-        backgroundColor: '#e0e0e0',
+        backgroundColor: "#202020",
+        // borderWidth: 0.5,
+        // borderColor: "#ccff33",
         alignSelf: 'center',
         alignItems: "center",
         borderRadius: 20,
         justifyContent: "center"
     },
     editButtonContainer: {
-        marginTop: -30,
+        marginTop: -20,
         alignSelf: 'center',
     },
     avatarStyle: {
@@ -449,7 +511,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         minWidth: 130,
         alignItems: 'center',
-        backgroundColor: '#B18CE5',
+        backgroundColor: '#ccff33',
         padding: 12,
     },
     buttonDisable: {
@@ -461,45 +523,38 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         // minwidth: 130,
         alignItems: 'center',
-        backgroundColor: '#b7b7b7',
+        backgroundColor: '#656565',
         paddingVertical: 12,
         paddingHorizontal: 20
-    },
-    buttonSecond: {
-        flexDirection: "row",
-        justifyContent: "space-around",
-        alignSelf: 'center',
-        borderRadius: 10,
-        width: 130,
-        alignItems: 'center',
-        borderWidth: 1,
-        borderColor: '#B18CE5',
-        padding: 12,
-    },
-    buttonTextSecond: {
-        fontSize: 15,
-        textAlign: 'center',
-        color: '#B18CE5'
     },
     buttonText: {
         fontSize: 15,
         textAlign: 'center',
         color: '#fff'
     },
+    buttonTextDisabled: {
+        fontSize: 15,
+        textAlign: 'center',
+        color: '#373737'
+    },
     formContainer: {
         height: "100%",
-        width: '90%',
+        // width: '90%',
         alignSelf: 'center',
+        alignItems: 'center',
+
     },
     inputTitle: {
+        color: "#fff",
         fontSize: 15,
         marginLeft: 10,
-        marginBottom: 5
+        // marginBottom: 10,
     },
     imageTitle: {
+        color: "#fff",
         fontSize: 15,
         marginLeft: 10,
-        marginBottom: 5
+        marginBottom: 10
     },
     imageSubTitle: {
         marginLeft: 10,
@@ -513,34 +568,41 @@ const styles = StyleSheet.create({
 
     },
     input: {
-        backgroundColor: '#FFF',
-        paddingVertical: 15,
-        borderColor: '#ccc',
-        borderWidth: 0.5,
-        borderRadius: 20,
-        paddingHorizontal: 20,
+        padding: 12,
+        backgroundColor: 'transparent',
+        // minWidth: '80%',
+        // maxWidth: '92%',
+        borderBottomWidth: 0.5,
+        borderColor: '#ccff33',
+        marginHorizontal: 10,
+        // borderRadius: 10,
+        color: "#e0e0e0",
     },
     containerLocationInput: {
-        marginTop: 30,
-        // alignItems: "center"
+        alignItems: 'center',
+        width: "100%",
+        paddingHorizontal: 20,
+        marginTop: 20,
     },
     inputContainerVoeux: {
         marginTop: 30,
-        marginBottom: 70
+        marginBottom: 30
     },
     inputVoeux: {
-        backgroundColor: '#FFF',
+        color: "#fff",
+        fontSize: 16,
+        backgroundColor: 'transparent',
         minHeight: 100,
         minWidth: 300,
         paddingVertical: 15,
-        borderColor: '#ccc',
+        borderColor: '#ccff33',
         borderWidth: 0.5,
         borderRadius: 20,
         paddingHorizontal: 20,
     },
     title: {
         fontSize: 20,
-        color: "#B18CE5",
+        color: "#fff",
     },
     autocompleteContainer: {
         color: "#C2D4E1",
@@ -548,11 +610,13 @@ const styles = StyleSheet.create({
     },
     textInput: {
         padding: 12,
-        backgroundColor: '#fff',
+        backgroundColor: 'transparent',
         minWidth: '97%',
         // maxWidth: '92%',
+        borderBottomWidth: 0.5,
+        borderColor: '#ccff33',
         marginHorizontal: 10,
-        borderRadius: 10,
+        // borderRadius: 10,
         color: "#000",
     },
     separator: {

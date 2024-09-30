@@ -32,6 +32,13 @@ const Layout = () => {
           }}
         />
         <Drawer.Screen
+          name="(nft)"
+          options={{
+            drawerItemStyle: { display: 'none' },
+            title: '',
+          }}
+        />
+        <Drawer.Screen
           name="settings"
           options={{
             drawerLabel: 'Mes données et comptes',

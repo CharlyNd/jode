@@ -230,7 +230,7 @@ export default function Demande() {
           {image && <TouchableOpacity onPress={pickImage}>
             <Image source={{ uri: image }} style={styles.avatar} />
             <View style={styles.editButtonContainer}>
-              <Image source={require("../../../assets/images/edit.png")} style={styles.editButtonStyle} />
+              {/* <Image source={require("../../../assets/images/edit.png")} style={styles.editButtonStyle} /> */}
             </View>
           </TouchableOpacity>}
           {!image &&
@@ -239,7 +239,7 @@ export default function Demande() {
                 <FontAwesome5 name="images" size={50} color="#c5c5c5" />
               </View>
               <View style={styles.editButtonContainer}>
-                <Image source={require("../../../assets/images/edit.png")} style={styles.editButtonStyle} />
+                {/* <Image source={require("../../../assets/images/edit.png")} style={styles.editButtonStyle} /> */}
               </View>
             </TouchableOpacity>}
           <View style={styles.containerNewDemande}>

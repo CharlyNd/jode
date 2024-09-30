@@ -7,48 +7,88 @@ export default function Search() {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [mail, setMail] = useState('');
+  const [snap, setSnap] = useState('');
+  const [insta, setInsta] = useState('');
 
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }} scrollEnabled={false} style={styles.subContainer} automaticallyAdjustKeyboardInsets>
         <View style={styles.results}>
-          <View style={styles.profilContainer}>
-            <View style={{ width: '20%' }}>
-              <TrafficLight color="couple" />
-            </View>
-            <View style={styles.imageSection}>
-              {/* {image && <Image source={{ uri: image }} style={styles.avatar} />} */}
-              {/* {!image && <View style={styles.avatar} />} */}
-              <View style={styles.avatar} />
-              <View style={styles.profilDetails}>
-                <Text style={{ fontSize: 23, fontFamily: "SpaceMono-Regular" }}>Charles-Etienne N'DIAYE</Text>
-                <Text style={{ fontSize: 18, fontFamily: "SpaceMono-Regular" }}>06 12 34 56 78</Text>
-              </View>
-
+          {/* <View style={styles.profilContainer}> */}
+          <View style={styles.imageSection}>
+            {/* {image && <Image source={{ uri: image }} style={styles.avatar} />} */}
+            {/* {!image && <View style={styles.avatar} />} */}
+            <View style={styles.avatar} >
+              <Image source={require('../../../assets/images/noResults.png')} style={{ width: 125, height: 125, borderRadius: 100 }} />
             </View>
 
+            <View style={styles.profilDetails}>
+              <Text style={{ fontSize: 20, color: "#e0e0e0", fontFamily:"SpaceMono-Regular" }}>Charles-Etienne</Text>
+              {/* <Text style={{ fontSize: 18, color: "#e0e0e0" }}>06 12 34 56 78</Text> */}
+            </View>
           </View>
+          {/* <View style={{
+            backgroundColor: "#bb3838", borderRadius: 50, paddingHorizontal: 10, paddingVertical: 5
+          }}>
+            <Text style={{ fontSize: 13, color: "#fff" }}>Jode Rouge</Text>
+          </View> */}
+          <View style={{ height: '40%', width: "25%" }}>
+            <TrafficLight color="couple" />
+          </View>
+
+          {/* </View> */}
           {/* <Image source={require('../../../assets/images/noResults.png')} style={styles.image} />
           <Text style={{ fontSize: 20, color: "#9f9f9f", marginTop: 10 }}>Aucun Résultat</Text> */}
         </View>
         <View style={styles.searchSection}>
-          <View style={styles.searchContainer}>
-            <Text style={styles.subtitle}>Recherche par Nom et Prénom</Text>
-            <TextInput
-              style={styles.searchBar}
-              placeholder="Rechercher..."
-              value={name}
-              onChangeText={setName}
-            />
-          </View>
-          <View style={styles.searchContainer}>
-            <Text style={styles.subtitle}>Recherche par Téléphone</Text>
-            <TextInput
-              style={styles.searchBar}
-              placeholder="Rechercher..."
-              value={phone}
-              onChangeText={setPhone}
-            />
+          <View style={{ height: "100%", alignItems: "center", justifyContent: "space-around", paddingTop: "5%" }}>
+            <View>
+              <Text style={{ fontSize: 17, color: "#cfcfcf", fontFamily:"SpaceMono-regular" }}>Rechercher une personne 🚦 par ↴</Text>
+              {/* <Text style={{ fontSize: 18, color: "#e0e0e0" }}>06 12 34 56 78</Text> */}
+            </View>
+            <View style={styles.searchContainer}>
+              {/* <Text style={styles.subtitle}>Recherche par Nom et Prénom</Text> */}
+              <TextInput
+                style={styles.searchBar}
+                placeholder="Nom et Prénom"
+                value={name}
+                onChangeText={setName}
+                placeholderTextColor={"#8e8e8e"}
+              />
+            </View>
+            {/* <View style={{ alignItems: "center" }}>
+            <Text style={{ fontSize: 20, color: "#e0e0e0" }}>ou</Text>
+          </View> */}
+            <View style={styles.searchContainer}>
+              {/* <Text style={styles.subtitle}>Recherche par numéro de téléphone</Text> */}
+              <TextInput
+                style={styles.searchBar}
+                placeholder="Numéro de téléphone"
+                value={phone}
+                onChangeText={setPhone}
+                placeholderTextColor={"#8e8e8e"}
+              />
+            </View>
+            <View style={styles.searchContainer}>
+              {/* <Text style={styles.subtitle}>Recherche par numéro de téléphone</Text> */}
+              <TextInput
+                style={styles.searchBar}
+                placeholder="@instagram"
+                value={insta}
+                onChangeText={setInsta}
+                placeholderTextColor={"#8e8e8e"}
+              />
+            </View>
+            <View style={styles.searchContainer}>
+              {/* <Text style={styles.subtitle}>Recherche par numéro de téléphone</Text> */}
+              <TextInput
+                style={styles.searchBar}
+                placeholder="@snapshat"
+                value={snap}
+                onChangeText={setSnap}
+                placeholderTextColor={"#8e8e8e"}
+              />
+            </View>
           </View>
         </View>
       </ScrollView>
@@ -60,13 +100,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    padding: 20,
+    // padding: 10,
+    backgroundColor: 'rgba(0, 0, 0, 0.95)',
   },
   avatar: {
     width: 125,
     height: 125,
-    backgroundColor: '#ccc',
-    alignSelf: 'center',
+    // backgroundColor: '#ccc',
+    // alignSelf: 'center',
     borderRadius: 100,
   },
   image: {
@@ -75,29 +116,35 @@ const styles = StyleSheet.create({
   },
   subContainer: {
     width: '100%',
-    paddingHorizontal: 10,
+    // paddingHorizontal: 10,
   },
   subtitle: {
-    fontFamily: 'SpaceMono-Regular',
+    // fontFamily: 'SpaceMono-Regular',
     fontSize: 16,
+    color: "#e0e0e0",
   },
   searchSection: {
     width: '100%',
-    marginTop: "5%",
-    height: '25%',
-    justifyContent: 'space-around',
+    height: '40%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 30,
   },
   searchContainer: {
     width: '100%',
     alignItems: 'center',
   },
   searchBar: {
-    backgroundColor: '#f9f9f9',
-    height: 40,
-    borderRadius: 40,
-    paddingHorizontal: 15,
-    width: '100%',
-    marginTop: 10,
+    padding: 12,
+    // backgroundColor: '#202020',
+    // minWidth: '70%',
+    // borderRadius: 10,
+    borderBottomWidth: 0.5,
+    borderColor: '#ccff33',
+    marginHorizontal: 10,
+    fontSize: 16,
+    minWidth: '50%',
+    color: "#ccff33",
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -107,29 +154,34 @@ const styles = StyleSheet.create({
     shadowRadius: 2.62
   },
   results: {
-    // marginTop: "10%",
-    // backgroundColor: '#eeeeee',
-    width: '100%',
-    height: '70%',
-    justifyContent: 'center',
+    alignSelf: 'center',
+    padding: 20,
+    borderWidth: 1,
+    // marginTop: "5%",
+    backgroundColor: '#101010',
+    width: "100%",
+    height: '55%',
+    justifyContent: 'space-around',
     alignItems: 'center',
-    borderRadius: 20,
+    // borderRadius: 50,
+    flexDirection: 'column',
   },
   profilContainer: {
     width: '100%',
-    height: '50%',
-    justifyContent: 'center',
+    height: '70%',
+    justifyContent: 'space-between',
     alignItems: 'center',
   },
   imageSection: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     width: '100%',
-    marginTop: 30,
+    marginTop: 20,
     alignItems: "center",
   },
   profilDetails: {
-    maxWidth: '60%',
-    marginTop: 20,
+    // alignItems: "center",
+    // maxWidth: '60%',
+    // marginTop: 20,
   },
 });
