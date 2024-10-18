@@ -1,13 +1,12 @@
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, ActivityIndicator, ImageBackground } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity,Image, TextInput, ActivityIndicator, ImageBackground } from 'react-native';
 import React, { useState } from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
 import TrafficLightBar from '@/components/TrafficLightBar';
 import { TypeAnimation } from 'react-native-type-animation';
 import Checkbox from 'expo-checkbox';
-import Animated, { FadeIn } from 'react-native-reanimated';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-
-const Signup = () => {
+const Signup2 = () => {
     const local = useLocalSearchParams();
     const [email, setEmail] = useState<string | undefined>('');
     const [loading, setLoading] = useState(false);
@@ -34,36 +33,38 @@ const Signup = () => {
         };
     }
     return (
-        <Animated.View entering={FadeIn.duration(1500)} style={styles.container}>
-            <ScrollView style={{ width: "100%" }} contentContainerStyle={{ flexGrow: 1 }} scrollEnabled={false}>
-                <ImageBackground source={require("../assets/images/background2.png")} resizeMode="cover" style={styles.image}>
-                    <View style={styles.step}>
-                        <TrafficLightBar light1={true} light2={true} light3={false} light4={false} />
-                    </View>
+        <SafeAreaView style={styles.container}>
+            <ScrollView style={{ width: "100%" }} contentContainerStyle={{ flexGrow: 1 }} >
+                {/* <ImageBackground source={require("../assets/images/background2.png")} resizeMode="cover" style={styles.image}> */}
+                <View style={styles.step}>
+                    <TrafficLightBar light1={true} light2={true} light3={false} light4={false} light5={false} />
+                </View>
+                <View style={styles.image}>
 
                     <View style={styles.containerForm}>
+
                         {loading && (
                             <View
-                                style={{
-                                    ...StyleSheet.absoluteFillObject,
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    zIndex: 1,
-                                    elevation: 1,
-                                    backgroundColor: 'rgba(0,0,0,0.5)',
-                                    gap: 10,
-                                }}>
+                            style={{
+                                ...StyleSheet.absoluteFillObject,
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                zIndex: 1,
+                                elevation: 1,
+                                backgroundColor: 'rgba(0,0,0,0.5)',
+                                gap: 10,
+                            }}>
                                 <ActivityIndicator size="large" color="#fff" />
                             </View>
                         )}
                         <View style={styles.containerInput}>
                             <TypeAnimation
                                 sequence={[
-                                    { text: `Bienvenue ${local.prenom},\n merci d'ajouter ton email ✉️ ` },
+                                    { text: `Bienvenue ${local.prenom} ` },
                                 ]}
                                 style={{
                                     alignSelf: 'center',
-                                    color: '#000',
+                                    color: '#e0e0e0',
                                     fontSize: 20,
                                     fontFamily: 'SpaceMono-Regular',
                                     width: '90%',
@@ -73,9 +74,10 @@ const Signup = () => {
                                 typeSpeed={50}
                                 cursor={false}
                             />
+                        <Image source={require('../assets/images/prenom3.png')} style={{ width: 150, height: 150, alignSelf:"center" }} resizeMode='contain' />
                             <TextInput
                                 autoCapitalize="none"
-                                placeholder="Email"
+                                placeholder="Entre ton email"
                                 keyboardType='email-address'
                                 placeholderTextColor={"#808080"}
                                 value={email}
@@ -94,7 +96,7 @@ const Signup = () => {
                                 ]}
                                 style={{
                                     alignSelf: 'center',
-                                    color: '#000',
+                                    color: '#e0e0e0',
                                     fontSize: 20,
                                     fontFamily: 'SpaceMono-Regular',
                                     width: '90%',
@@ -102,14 +104,15 @@ const Signup = () => {
                                 }}
                                 blinkSpeed={800}
                                 typeSpeed={50}
+                                cursor={false}
                             />
-                            <View style={[styles.checkboxContainer, { borderColor: genre === '' ? '#b2004d' : '#54b8b3' }]}>
+                            <View style={[styles.checkboxContainer, { borderColor: genre === '' ? '#000' : '#54b8b3', backgroundColor:'#000' }]}>
                                 <View style={styles.section}>
                                     <Checkbox
                                         style={styles.checkbox}
                                         value={isChecked}
                                         onValueChange={() => { setChecked(true); setChecked2(false); setChecked3(false); setGenre('femme'); }}
-                                        color={isChecked ? '#2F215F' : undefined}
+                                        color={isChecked ? '#5e60ce' : undefined}
                                     />
                                     <Text style={styles.paragraph}>Femme</Text>
                                 </View>
@@ -118,7 +121,7 @@ const Signup = () => {
                                         style={styles.checkbox}
                                         value={isChecked2}
                                         onValueChange={() => { setChecked(false); setChecked2(true); setChecked3(false); setGenre('homme'); }}
-                                        color={isChecked2 ? '#2F215F' : undefined}
+                                        color={isChecked2 ? '#5e60ce' : undefined}
                                     />
                                     <Text style={styles.paragraph}>Homme</Text>
                                 </View>
@@ -127,7 +130,7 @@ const Signup = () => {
                                         style={styles.checkbox}
                                         value={isChecked3}
                                         onValueChange={() => { setChecked(false); setChecked2(false); setChecked3(true); setGenre('binaire'); }}
-                                        color={isChecked3 ? '#2F215F' : undefined}
+                                        color={isChecked3 ? '#5e60ce' : undefined}
                                     />
                                     <Text style={styles.paragraph}>Non-binaire</Text>
                                 </View>
@@ -137,9 +140,10 @@ const Signup = () => {
                     <TouchableOpacity onPress={() => router.navigate({ pathname: "signup3", params: { prenom: local.prenom, name: local.name, email: email, genre: genre } })} style={isValidMail && genre !== '' ? styles.button : styles.buttonDisabled} disabled={!isValidMail || genre === ''}>
                         <Text style={{ color: '#fff', fontWeight: "bold" }}>Suivant</Text>
                     </TouchableOpacity>
-                </ImageBackground>
+                </View>
+                {/* </ImageBackground> */}
             </ScrollView>
-        </Animated.View>
+        </SafeAreaView>
     );
 };
 
@@ -147,6 +151,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         height: '100%',
+        backgroundColor:"#000"
     },
     containerInput: {
         flexDirection: 'column',
@@ -156,17 +161,18 @@ const styles = StyleSheet.create({
     },
     containerForm: {
         flexDirection: 'column',
-        gap: 70,
+        gap: 50,
         padding: 0,
     },
     step: {
         alignSelf: 'center',
         position: 'absolute',
-        top: 50,
+        top: 10,
     },
     image: {
         flex: 1,
-        justifyContent: 'center',
+        marginTop:"15%",
+        // justifyContent: 'center',
     },
     infoContainer: {
         flexDirection: 'row',
@@ -179,18 +185,9 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         fontSize: 18,
         padding: 10,
-        color: '#000',
-        borderWidth: 2,
+        color: '#e0e0e0',
+        borderWidth: 0.5,
         borderColor: '#54b8b3',
-        backgroundColor: "#FFF",
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 0,
-        },
-        shadowOpacity: 0.8,
-        shadowRadius: 0.50,
-        zIndex: 0,
     },
     inputFieldError: {
         width: '80%',
@@ -198,18 +195,9 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         fontSize: 18,
         padding: 10,
-        color: '#000',
-        borderWidth: 2,
-        borderColor: '#b2004d',
-        backgroundColor: "#FFF",
-        shadowColor: "#b2004d",
-        shadowOffset: {
-            width: 0,
-            height: 0,
-        },
-        shadowOpacity: 0.8,
-        shadowRadius: 0.50,
-        zIndex: 0,
+        color: '#e0e0e0',
+        borderWidth: 0.5,
+        backgroundColor: '#202020',
     },
     button: {
         alignSelf: 'center',
@@ -217,7 +205,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: 40,
         alignItems: 'center',
-        backgroundColor: '#2F215F',
+        backgroundColor: '#5e60ce',
         padding: 12,
         borderRadius: 25,
     },
@@ -225,9 +213,9 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         width: '80%',
         position: 'absolute',
-        bottom: 40,
+        bottom: 20,
         alignItems: 'center',
-        backgroundColor: '#a1a1a1',
+        backgroundColor: '#303030',
         padding: 12,
         borderRadius: 25,
     },
@@ -237,6 +225,7 @@ const styles = StyleSheet.create({
     },
     paragraph: {
         fontSize: 17,
+        color:"#e0e0e0",
         fontFamily: 'SpaceMono-Regular',
     },
     checkbox: {
@@ -246,11 +235,10 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'space-between',
         gap: 10,
-        backgroundColor: '#FFF',
-        padding: 20,
+        padding: 10,
         borderRadius: 15,
-        borderWidth: 2,
+        borderWidth: 0.5,
     },
 });
 
-export default Signup;
+export default Signup2;

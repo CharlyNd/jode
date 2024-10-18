@@ -4,50 +4,39 @@ export default function Layout() {
   return (
     <Stack
       screenOptions={{
-        // Hide the header for all other routes.
         headerShown: false,
         header: () => null 
       }}>
       <Stack.Screen
         name="index"
         options={{
-          // Hide the header for all other routes.
-          headerShown: false,
-          header: () => null 
-        }}
-      />
-      {/* <Stack.Screen
-        name="search"
-        options={{
-          headerShown: Platform.OS === 'android' ? true : false,
-          headerTitle: 'Recherche',
+          headerShown:  Platform.OS === 'android' ? true : false,
+          headerTitle: 'Ma demande digitale',
           headerTitleAlign: 'center',
           // Set the presentation mode to modal for our modal route.
-          presentation: Platform.OS === 'android' ? 'card' : 'formSheet',
+          presentation: Platform.OS === 'android'?'card':'formSheet',
         }}
-      /> */}
+      />
       <Stack.Screen
         name="demande"
         options={{
-          headerShown: false,
+          headerShown:  Platform.OS === 'android' ? true : false,
+          headerTitle: 'demande',
+          headerTitleAlign: 'center',
           // Set the presentation mode to modal for our modal route.
+          presentation: Platform.OS === 'android'?'card':'formSheet',
         }}
       />
-      {/* <Stack.Screen
-        name="nft"
+      <Stack.Screen
+        name="code"
         options={{
-          headerShown: false,
-          presentation: Platform.OS === 'android' ? 'card' : 'containedModal',
-          contentStyle: {
-            // marginLeft: 'auto',
-            borderTopLeftRadius: 20,
-            borderTopRightRadius: 20,
-            // width: Platform.OS === 'android'?'100%':'95%',
-            backgroundColor: 'transparent',
-          },
+          headerShown:  Platform.OS === 'android' ? true : false,
+          headerTitle: 'Mon code',
+          headerTitleAlign: 'center',
           // Set the presentation mode to modal for our modal route.
+          presentation: Platform.OS === 'android'?'card':'formSheet',
         }}
-      /> */}
+      />
     </Stack>
   );
 }

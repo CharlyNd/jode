@@ -7,7 +7,8 @@ const TrafficLightBar = (props: any) => {
       <View style={[styles.light, props.light1 ? styles.redLight : null]} />
       <View style={[styles.light, props.light2 ? styles.redLight : null]} />
       <View style={[styles.light, props.light3  ? styles.orangeLight : null]} />
-      <View style={[styles.light, props.light4 ? styles.greenLight : null]} />
+      <View style={[styles.light, props.light4  ? styles.orangeLight : null]} />
+      <View style={[styles.light, props.light5 ? styles.greenLight : null]} />
     </View>
   );
 };
@@ -18,7 +19,7 @@ const styles = StyleSheet.create({
     width: "60%",
     alignSelf: 'center',
     height: 18,
-    backgroundColor: 'rgba(255, 255, 255, 0.4)',
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
     borderRadius: 40,
     padding: 10,
     justifyContent: 'space-around',
@@ -38,8 +39,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#7a7a7a',
   },
   redLight: {
-    backgroundColor: '#c60000',
-    shadowColor: "#c60000",
+    backgroundColor: '#db1685',
+    shadowColor: "#db1685",
     shadowOffset: {
       width: 0,
       height: 0,

@@ -18,9 +18,9 @@ export default function Search() {
           <View style={styles.imageSection}>
             {/* {image && <Image source={{ uri: image }} style={styles.avatar} />} */}
             {/* {!image && <View style={styles.avatar} />} */}
-            <View style={styles.avatar} >
+            {/* <View style={styles.avatar} >
               <Image source={require('../../../assets/images/noResults.png')} style={{ width: 125, height: 125, borderRadius: 100 }} />
-            </View>
+            </View> */}
 
             <View style={styles.profilDetails}>
               <Text style={{ fontSize: 20, color: "#e0e0e0", fontFamily:"SpaceMono-Regular" }}>Charles-Etienne</Text>
@@ -32,9 +32,9 @@ export default function Search() {
           }}>
             <Text style={{ fontSize: 13, color: "#fff" }}>Jode Rouge</Text>
           </View> */}
-          <View style={{ height: '40%', width: "15%" }}>
+          {/* <View style={{ height: '40%', width: "25%" }}>
             <TrafficLight color="couple" />
-          </View>
+          </View> */}
 
           {/* </View> */}
           {/* <Image source={require('../../../assets/images/noResults.png')} style={styles.image} />
@@ -43,14 +43,14 @@ export default function Search() {
         <View style={styles.searchSection}>
           <View style={{ height: "100%", alignItems: "center", justifyContent: "space-around", paddingTop: "5%" }}>
             <View>
-              <Text style={{ fontSize: 17, color: "#cfcfcf" }}>Rechercher une personne 🚦 par ↴</Text>
+              <Text style={{ fontSize: 17, color: "#cfcfcf", fontFamily:"SpaceMono-regular" }}>Rechercher un couple par ↴</Text>
               {/* <Text style={{ fontSize: 18, color: "#e0e0e0" }}>06 12 34 56 78</Text> */}
             </View>
             <View style={styles.searchContainer}>
               {/* <Text style={styles.subtitle}>Recherche par Nom et Prénom</Text> */}
               <TextInput
                 style={styles.searchBar}
-                placeholder="Nom et Prénom"
+                placeholder="Prénom"
                 value={name}
                 onChangeText={setName}
                 placeholderTextColor={"#8e8e8e"}
@@ -59,36 +59,6 @@ export default function Search() {
             {/* <View style={{ alignItems: "center" }}>
             <Text style={{ fontSize: 20, color: "#e0e0e0" }}>ou</Text>
           </View> */}
-            <View style={styles.searchContainer}>
-              {/* <Text style={styles.subtitle}>Recherche par numéro de téléphone</Text> */}
-              <TextInput
-                style={styles.searchBar}
-                placeholder="Numéro de téléphone"
-                value={phone}
-                onChangeText={setPhone}
-                placeholderTextColor={"#8e8e8e"}
-              />
-            </View>
-            <View style={styles.searchContainer}>
-              {/* <Text style={styles.subtitle}>Recherche par numéro de téléphone</Text> */}
-              <TextInput
-                style={styles.searchBar}
-                placeholder="@instagram"
-                value={insta}
-                onChangeText={setInsta}
-                placeholderTextColor={"#8e8e8e"}
-              />
-            </View>
-            <View style={styles.searchContainer}>
-              {/* <Text style={styles.subtitle}>Recherche par numéro de téléphone</Text> */}
-              <TextInput
-                style={styles.searchBar}
-                placeholder="@snapshat"
-                value={snap}
-                onChangeText={setSnap}
-                placeholderTextColor={"#8e8e8e"}
-              />
-            </View>
           </View>
         </View>
       </ScrollView>
@@ -125,7 +95,7 @@ const styles = StyleSheet.create({
   },
   searchSection: {
     width: '100%',
-    height: '40%',
+    height: '20%',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 30,
@@ -136,11 +106,12 @@ const styles = StyleSheet.create({
   },
   searchBar: {
     padding: 12,
-    backgroundColor: '#252525',
+    backgroundColor: '#151515',
     // minWidth: '70%',
-    borderRadius: 15,
+    // borderRadius: 10,
+    borderRadius: 10,
     textAlign: 'center',
-    // borderWidth: 0.5,
+    borderWidth: 0.5,
     borderColor: '#5e60ce',
     marginHorizontal: 10,
     fontSize: 16,
@@ -161,7 +132,7 @@ const styles = StyleSheet.create({
     // marginTop: "5%",
     backgroundColor: '#101010',
     width: "100%",
-    height: '55%',
+    height: '75%',
     justifyContent: 'space-around',
     alignItems: 'center',
     // borderRadius: 50,

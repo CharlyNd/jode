@@ -28,7 +28,7 @@ const CELL_SIZE = height * 0.05;
 
 const CELL_BORDER_RADIUS = 20;
 const DEFAULT_CELL_BG_COLOR = "#fff";
-const NOT_EMPTY_CELL_BG_COLOR = "#2F215F";
+const NOT_EMPTY_CELL_BG_COLOR = "#5e60ce";
 const ACTIVE_CELL_BG_COLOR = "#acacac";
 
 const { Value, Text: AnimatedText } = Animated;
@@ -128,7 +128,7 @@ export default function () {
 
     return (
         <View style={styles.container}>
-            <ImageBackground source={require("../assets/images/background2.png")} resizeMode="cover" style={styles.image}>
+            {/* <ImageBackground source={require("../assets/images/background2.png")} resizeMode="cover" style={styles.image}> */}
                 <ScrollView
                     contentContainerStyle={{ flexGrow: 1, height: "100%", justifyContent: "center" }}
                     keyboardShouldPersistTaps="handled"
@@ -139,7 +139,7 @@ export default function () {
                         ]}
                         style={{
                             alignSelf: 'center',
-                            color: '#000',
+                            color: '#e0e0e0',
                             fontSize: 22,
                             marginBottom: 20,
                             fontFamily: 'SpaceMono-Regular',
@@ -148,6 +148,7 @@ export default function () {
                         }}
                         blinkSpeed={800}
                         typeSpeed={50}
+                        cursor={false}
                     />
                     <View>
                         <CodeField
@@ -176,7 +177,7 @@ export default function () {
                         </TouchableOpacity>
                     </View>
                 </ScrollView>
-            </ImageBackground>
+            {/* </ImageBackground> */}
         </View>
     );
 }
@@ -184,7 +185,8 @@ export default function () {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        height: "100%"
+        height: "100%",
+        backgroundColor:"#000"
     },
     image: {
         flex: 1,
@@ -228,7 +230,7 @@ const styles = StyleSheet.create({
         fontSize: 30,
         textAlign: "center",
         borderRadius: CELL_BORDER_RADIUS,
-        color: "#2F215F",
+        color: "#5e60ce",
         backgroundColor: "#fff",
     },
     icon: {
@@ -247,15 +249,15 @@ const styles = StyleSheet.create({
     validateButton: {
         marginTop: height * 0.1,
         padding: 10,
-        borderRadius: 5,
-        backgroundColor: "#2F215F",
-        paddingVertical: height * 0.018,
-        paddingHorizontal: width * 0.09,
+        borderRadius: 50,
+        backgroundColor: "#5e60ce",
+        paddingVertical: 15,
+        paddingHorizontal: 25,
         alignSelf: "center",
     },
     validateButtonText: {
         textAlign: "center",
-        fontSize: 15,
+        fontSize: 17,
         color: "#fff",
         fontFamily: "Montserrat_700Bold",
     },
@@ -267,7 +269,7 @@ const styles = StyleSheet.create({
     sendAgain: {
         textAlign: "center",
         fontSize: 17,
-        color: "#2F215F",
+        color: "#5e60ce",
         fontFamily: "Montserrat_600SemiBold",
     },
     buttonResendCode: {

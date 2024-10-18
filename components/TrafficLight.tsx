@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
   container: {
     width: "100%",
     height: "100%",
-    backgroundColor: 'rgba(0, 0, 0, 0.9)',
+    backgroundColor: 'rgba(40, 40, 40, 0.9)',
     borderBottomRightRadius: 40,
     borderBottomLeftRadius: 40,
     borderTopLeftRadius: 10,
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     shadowRadius: 3.00,
   },
   backgroundLight: {
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    backgroundColor: 'rgba(40, 40, 40, 0.7)',
     width: "200%",
     height: 50,
     alignItems: "center",
@@ -57,8 +57,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(150, 150, 150, 0.4)',
   },
   redLight: {
-    backgroundColor: '#c60000',
-    shadowColor: "#c60000",
+    backgroundColor: '#db1685',
+    shadowColor: "#db1685",
     shadowOffset: {
       width: 0,
       height: 0,

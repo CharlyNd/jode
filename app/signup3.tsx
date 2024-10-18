@@ -1,13 +1,13 @@
-import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, ImageBackground, Platform } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, ActivityIndicator, ImageBackground, Platform } from 'react-native';
 import React, { useState } from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
 import TrafficLightBar from '@/components/TrafficLightBar';
 import { TypeAnimation } from 'react-native-type-animation';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import Animated, { FadeIn } from 'react-native-reanimated';
-import { supabase } from '@/utils/supabase';
+import moment from "moment";
+import "moment/locale/fr";
 
-const Signup = () => {
+const Signup3 = () => {
     const local = useLocalSearchParams();
 
     const [loading, setLoading] = useState(false);
@@ -30,27 +30,29 @@ const Signup = () => {
     };
 
     return (
-        <Animated.View entering={FadeIn.duration(3500)} style={styles.container}>
-            <ImageBackground source={require("../assets/images/background3.png")} resizeMode="cover" style={styles.image}>
-                <View style={styles.step}>
-                    <TrafficLightBar light1={true} light2={true} light3={true} light4={false} />
-                </View>
+        <View style={styles.container}>
+            {/* <ImageBackground source={require("../assets/images/background3.png")} resizeMode="cover" style={styles.image}> */}
+            <View style={styles.step}>
+                <TrafficLightBar light1={true} light2={true} light3={true} light4={false} light5={false} />
+            </View>
+            <View style={styles.containerView}>
+            <Image source={require('../assets/images/birthday.png')} style={{ width: 300, height: 300, alignSelf:"center" }} resizeMode='contain' />
+
                 <TypeAnimation
                     sequence={[
-                        { text: "Quel est le jour de ton anniversaire 🎂 🎁 ?" },
+                        { text: "Quelle est ta date de naissance ?" },
                     ]}
                     style={{
                         alignSelf: 'center',
-                        position: 'absolute',
-                        top: 100,
-                        color: '#000',
-                        fontSize: 25,
+                        color: '#e0e0e0',
+                        fontSize: 18,
                         fontFamily: 'SpaceMono-Regular',
-                        width: '85%',
+                        width: '80%',
                         textAlign: 'center',
                     }}
                     blinkSpeed={800}
                     typeSpeed={50}
+                    cursor={false}
                 />
                 <View style={styles.containerForm}>
                     {loading && (
@@ -81,21 +83,30 @@ const Signup = () => {
                                 onChange={onChange}
                                 locale='fr'
                                 textColor='#fff'
-                                style={{ backgroundColor: dateSelected === '' ? '#2F215F' : '#54b8b3' }}
+                                style={{ backgroundColor: dateSelected === '' ? '#5e60ce' : '#54b8b3' }}
                             />)
                             }
                         </View>
                         {Platform.OS === 'android' && (
-                            <Text style={{ fontSize: 30, fontFamily: "SpaceMono-Regular", marginBottom: 20 }}>
-                                {dateSelected ? dateSelected : ''}
+                            <Text style={{ fontSize: 25, fontFamily: "SpaceMono-Regular", marginBottom: 20, color:"#e0e0e0" }}>
+                                {dateSelected ? moment(dateSelected).format('dddd D MMMM YYYY') : ''}
                             </Text>)}
+
+                            <Text style={styles.textAge}>Nous devons nous assurer que tu as l'âge pour utiliser Jode</Text>
+
                     </View>
                 </View>
-                <TouchableOpacity onPress={() => router.navigate({ pathname: "signup4", params: { prenom: local.prenom, name: local.name, email: local.email, birth: dateSelected, genre: local.genre } })} style={dateSelected !== '' ? styles.button : styles.buttonDisabled} disabled={dateSelected !== '' ? false : true}>
-                    <Text style={{ color: '#fff', fontFamily: "bold" }}>Suivant</Text>
-                </TouchableOpacity>
-            </ImageBackground>
-        </Animated.View>
+            </View>
+            <TouchableOpacity onPress={() => router.navigate({
+                pathname: "signup4",
+                params: { prenom: local.prenom, name: local.name, email: local.email, birth: dateSelected, genre: local.genre }
+            })}
+                style={dateSelected !== '' ? styles.button : styles.buttonDisabled}
+                disabled={dateSelected !== '' ? false : true}>
+                <Text style={{ color: '#fff', fontFamily: "bold" }}>Suivant</Text>
+            </TouchableOpacity>
+            {/* </ImageBackground> */}
+        </View>
     );
 };
 
@@ -103,6 +114,16 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         height: '100%',
+        backgroundColor: "#000"
+    },
+    textAge: {
+        width: "70%",
+        alignSelf: "center",
+        fontSize: 14,
+        bottom: "15%",
+        color: "#8e8e8e",
+        marginTop: '10%',
+        textAlign: "center"
     },
     containerInput: {
         flexDirection: 'column',
@@ -111,6 +132,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     containerForm: {
+        marginTop: 10,
         padding: 20,
     },
     step: {
@@ -127,37 +149,21 @@ const styles = StyleSheet.create({
         width: '100%',
         justifyContent: 'space-around',
     },
-    inputField: {
-        width: '80%',
-        height: 50,
-        borderRadius: 15,
-        fontSize: 18,
-        padding: 10,
-        color: '#000',
-        backgroundColor: "#FFF",
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 0,
-        },
-        shadowOpacity: 0.8,
-        shadowRadius: 0.50,
-        zIndex: 0,
-    },
     button: {
         alignSelf: 'center',
         width: '80%',
         position: 'absolute',
-        bottom: 40,
+        bottom: 20,
         alignItems: 'center',
-        backgroundColor: '#2F215F',
+        backgroundColor: '#5e60ce',
         padding: 12,
         borderRadius: 25,
     },
     buttonDate: {
-        width: "80%",
+        // width: "80%",
+        paddingHorizontal: 20,
         alignItems: 'center',
-        backgroundColor: '#2F215F',
+        backgroundColor: '#5e60ce',
         padding: 12,
         borderRadius: 25,
     },
@@ -165,12 +171,20 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         width: '80%',
         position: 'absolute',
-        bottom: 40,
+        bottom: 20,
         alignItems: 'center',
-        backgroundColor: '#a1a1a1',
+        backgroundColor: '#303030',
         padding: 12,
         borderRadius: 25,
     },
+    containerView: {
+        flexDirection: 'column',
+        width: '100%',
+        height: '90%',
+        marginTop: '20%',
+        // justifyContent: 'center',
+        alignItems: 'center',
+    },
 });
 
-export default Signup;
+export default Signup3;

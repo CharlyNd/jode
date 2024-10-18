@@ -20,6 +20,16 @@ export default function Layout() {
           presentation: Platform.OS === 'android'?'card':'formSheet',
         }}
       />
+      <Stack.Screen
+        name="blockchain"
+        options={{
+          headerShown:  Platform.OS === 'android' ? true : false,
+          headerTitle: 'Blockchain',
+          headerTitleAlign: 'center',
+          // Set the presentation mode to modal for our modal route.
+          presentation: Platform.OS === 'android'?'card':'formSheet',
+        }}
+      />
       {/* <Stack.Screen
         name="demande"
         options={{

@@ -21,13 +21,15 @@ const Layout = () => {
           drawerStyle: {
             width: Dimensions.get('window').width * 0.95,
           },
-          drawerHideStatusBarOnOpen: true
+          drawerHideStatusBarOnOpen: true,
+          drawerInactiveTintColor: '#fff',
+          drawerActiveBackgroundColor: 'rgba(15, 15, 15, 0.9)',
         }}>
         <Drawer.Screen
           name="(tabs)"
           options={{
             // drawerItemStyle: { display: 'none' },
-            drawerIcon: ()=>(<Ionicons name="home-outline" size={24} color="#2F215F" />),
+            drawerIcon: ()=>(<Ionicons name="home-outline" size={24} color="#5e60ce" />),
             title: '',
           }}
         />

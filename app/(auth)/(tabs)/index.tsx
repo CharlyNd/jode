@@ -10,6 +10,8 @@ import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import TrafficLight from '@/components/TrafficLight';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import { StatusBar } from 'expo-status-bar';
+import Entypo from '@expo/vector-icons/Entypo';
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 
 
 
@@ -19,6 +21,7 @@ const Home = () => {
   const [situation, setSituation] = useState<string | null>("");
   const [colorLight, setColorLight] = useState<string | null>("");
   const [isNft, setIsNft] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
   const [data, setData] = useState<any | null>(null);
   const [userDate, setUserDate] = useState<string | null>(null);
   const [days, setDays] = useState<number>(0);
@@ -87,6 +90,7 @@ const Home = () => {
       setUserDate(data[0].birthday || 'No date provided');
       setUserName(data[0].name || 'No name provided');
       setSituation(data[0].situation);
+      setIsVisible(data[0].showStatut);
       setPartenaire(data[0].prenomPartenaire || 'No partenaire provided');
       switch (data[0].situation) {
         case "celibataire":
@@ -137,7 +141,7 @@ const Home = () => {
   return (
     <View style={styles.container}>
       <StatusBar style="dark" />
-      <ImageBackground source={require("../../../assets/images/background2.png")} resizeMode="cover" style={styles.image}>
+      {/* <ImageBackground source={require("../../../assets/images/background1.png")} resizeMode="cover" style={styles.image}> */}
         {/* <View style={{ height: "5%", paddingTop: 10}}>
           <Image source={require("../../../assets/images/logo.png")} resizeMode="contain" style={{ alignSelf: "center", width: 60, height: 60, marginLeft: 15 }} />
         </View> */}
@@ -157,32 +161,35 @@ const Home = () => {
           <TouchableOpacity><Text style={styles.profilButton}>compléter</Text></TouchableOpacity>
         </View> */}
           <View style={styles.trafficLightContainer}>
-            <View style={styles.daysContainer}>
-              <View>
-                <Text style={styles.textNumberDays}>{colorLight === "rouge" ? `${days} jours` : "0 visite"} </Text>
-                {/* <Text style={styles.textDays}>jours</Text> */}
+            {colorLight === "rouge" ?
+              <View style={styles.daysContainer}>
+                <View>
+                  <Text style={styles.textNumberDays}>{days} jours </Text>
+                  {/* <Text style={styles.textDays}>jours</Text> */}
+                </View>
+                <View>
+                  <Text style={styles.textPersonDays}>aux cotés de {partenaire} </Text>
+                </View>
               </View>
-              <View>
-                <Text style={styles.textPersonDays}>{colorLight === "rouge" ? `aux cotés de ${partenaire}` : "sur ton profil"} </Text>
-              </View>
-            </View>
-            <View style={{ maxHeight: '40%', width: "20%" }}>
+              : null}
+            <View style={{ maxHeight: '35%', width: "18%" }}>
               <TrafficLight color={situation} />
             </View>
             {/* <View style={{ marginTop: 10 }}>
               <Text style={{ fontSize: 15 }}>En couple</Text>
             </View> */}
             <View style={{ alignItems: "center", justifyContent: "center", flexDirection: "column", gap: 10, minHeight: "25%" }}>
-              <View>
+              {/* <View>
                 <Text style={{ fontSize: 25, fontWeight: "500", textAlign: "center" }}>Jode {colorLight}</Text>
-              </View>
+              </View> */}
               {/* <View>
                 <Text style={{ fontSize: 15, fontWeight: "400", textAlign: "center", color: "#898989" }}>On pourra te retrouver en recherchant ton numéro de téléphone ou ton nom complet</Text>
               </View> */}
               <View>
                 <TouchableOpacity style={styles.buttonUpdateSitu}
                   onPress={() => navigation.dispatch(DrawerActions.openDrawer())} >
-                  <Text style={styles.buttonTextUpdateSitu}>Mettre à jour</Text>
+                  <Feather name="power" size={40} color="#e0e0e0" />
+                  {/* <Text style={styles.buttonTextUpdateSitu}>Mettre à jour ma situation</Text> */}
                 </TouchableOpacity>
               </View>
             </View>
@@ -190,17 +197,28 @@ const Home = () => {
         </View>
         <View style={styles.bottomSection}>
           <View>
-            <View style={{ alignSelf: "center", alignItems: "center", justifyContent: "space-between", flexDirection: "row", width: "90%", marginTop: 5 }}>
-              <Feather name="link" size={30} color="#888888" />
+            <View style={{ alignSelf: "center", alignItems: "center", justifyContent: "space-between", flexDirection: "row", width: "90%", marginVertical: '2%' }}>
               <View>
-                <Text style={{ color: "#888888", fontWeight: "bold", fontSize: 15, fontFamily: 'SpaceMono-Regular' }}>Chaîne des engagements</Text>
+                <Text style={{ color: "#888888",  fontSize: 15 }}><Feather name="link" size={15} color="#888888" />   Derniers Unions Digitaux</Text>
               </View>
-            </View>
-            <View>
-              <TouchableOpacity style={styles.button}
-                onPress={() => router.navigate('(nft)')} >
-                <Text style={styles.buttonText}>Créer mon Union Digital</Text>
+              <TouchableOpacity onPress={() => router.navigate('blockchain')} >
+                <FontAwesome5 name="plus-circle" size={25} color="#e0e0e0" />
               </TouchableOpacity>
+            </View>
+            <View style={{ flexDirection: "row", justifyContent: "space-around",marginBottom:'2%',  alignItems: "center" }}>
+              <View>
+                <TouchableOpacity style={styles.buttonUnion}
+                  onPress={() => router.navigate('(nft)')} >
+                  {/* <Image source={require("../../../assets/images/union.png")} style={{ width: 40, height: 40}} /> */}
+                  <Text style={styles.buttonTextUnion}>Créer mon Union Digital</Text>
+                </TouchableOpacity>
+              </View>
+              <View>
+                <TouchableOpacity style={[styles.button, { backgroundColor: "#e0e0e0" }]}
+                  onPress={() => router.navigate('(nft)/codeScreen')} >
+                  <Text style={styles.buttonText}>J'ai un code</Text>
+                </TouchableOpacity>
+              </View>
             </View>
             <FlatList
               data={listData}
@@ -210,30 +228,34 @@ const Home = () => {
                 <View style={{ flexDirection: "row", width: "100%", alignItems: "center", justifyContent: "space-around", marginVertical: 5, padding: 5, borderRadius: 20 }}>
                   {/* <Feather name="link" size={20} color="#c8c8c8" /> */}
                   {/* <FontAwesome6 name="traffic-light" size={24} color="#d3b300" /> */}
-                  <Text style={{ color: "#000", fontFamily: 'SpaceMono-Regular' }}>{item.id * 12761489}</Text>
+                  <Text style={{ color: "#e0e0e0" }}>n°{item.id}</Text>
+                  {/* <Text style={{ color: "#e0e0e0" }}>{item.id * 12789}</Text> */}
 
-                  <Text style={{ fontFamily: 'SpaceMono-Regular', fontSize: 15, fontWeight: "bold", maxWidth: 200, color: "#000" }}>{item.name} & {item.name2}</Text>
-                  <Text style={{ color: "#000", fontFamily: 'SpaceMono-Regular' }}>{item.date}</Text>
-                  <Text style={{ color: "#000", fontFamily: 'SpaceMono-Regular' }}>{item.lieu}</Text>
+                  <Text style={{ fontSize: 15, fontWeight: "bold", maxWidth: 200, color: "#e0e0e0" }}>{item.name} & {item.name2}</Text>
+                  <Text style={{ color: "#e0e0e0" }}>{item.date}</Text>
+                  <Text style={{ color: "#e0e0e0" }}>{item.lieu}</Text>
                 </View>
               )}
             />
           </View>
         </View>
         <View style={styles.bottomNavContainer}>
-          <View style={styles.iconNavContainer}>
-            <TouchableOpacity onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
+          <TouchableOpacity onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
+            <View style={styles.iconNavContainer}>
               {image && <Image source={{ uri: image }} style={styles.avatar} />}
               {!image && <View style={styles.avatar} />}
-            </TouchableOpacity>
-            <Text style={styles.statusText}>visible</Text>
-          </View>
+              <Text style={styles.statusText}>{isVisible ? "visible" : "masqué"}</Text>
+            </View>
+          </TouchableOpacity>
           <View style={styles.iconNavRightContainer}>
-            <TouchableOpacity onPress={() => router.navigate("(nft)")} style={{ backgroundColor: "#202020", padding: 8, borderRadius: 50 }}>
-              <MaterialCommunityIcons name="ring" size={30} color="#fff" />
+            <TouchableOpacity onPress={() => router.navigate("(nft)")} style={{ padding: 8, borderRadius: 50, backgroundColor:"#101010" }}>
+              <MaterialCommunityIcons name="ring" size={24} color="#e0e0e0" />
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => router.navigate("search")} style={{ backgroundColor: "#202020", padding: 8, borderRadius: 50 }}>
-              <Ionicons name="search" size={30} color="#fff" />
+            {/* <TouchableOpacity onPress={() => router.navigate("blockchain")} style={{ padding: 8, borderRadius: 50, backgroundColor:"#101010" }}>
+              <Entypo name="open-book" size={24} color="#e0e0e0" />
+            </TouchableOpacity> */}
+            <TouchableOpacity onPress={() => router.navigate("search")} style={{ padding: 8, borderRadius: 50, backgroundColor:"#101010" }}>
+              <Ionicons name="search" size={24} color="#e0e0e0" />
             </TouchableOpacity>
           </View>
         </View>
@@ -253,7 +275,7 @@ const Home = () => {
           <Text style={styles.buttonDemandeText}>Voir le NFT</Text>
         </TouchableOpacity>
       </View> */}
-      </ImageBackground>
+      {/* </ImageBackground> */}
     </View>
   )
 }
@@ -262,6 +284,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     height: '100%',
+    backgroundColor: '#000',
   },
   cardContainer: {
     alignSelf: 'center',
@@ -276,7 +299,7 @@ const styles = StyleSheet.create({
     minWidth: '70%',
     borderRadius: 10,
     alignItems: 'center',
-    backgroundColor: '#B18CE5',
+    backgroundColor: '#5e60ce',
     padding: 12,
   },
   image: {
@@ -311,7 +334,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingRight: 20,
-    backgroundColor: 'rgba(0, 0, 0, 0.9)',
+    // backgroundColor: 'rgba(20, 20, 20, 0.9)',
+    backgroundColor:"#202020",
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -323,6 +347,8 @@ const styles = StyleSheet.create({
   avatar: {
     width: 40,
     height: 40,
+    borderWidth: 4,
+    borderColor: 'rgba(20, 20, 20, 0.9)',
     backgroundColor: '#ccc',
     alignSelf: 'center',
     borderRadius: 100,
@@ -331,24 +357,24 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    gap: 30,
+    gap: 25,
   },
   iconNavContainer: {
-    backgroundColor: "#202020",
-    paddingHorizontal: 10,
-    paddingVertical: 5,
+    backgroundColor:"#101010",
+    paddingRight: 5,
+    // paddingVertical: 5,
     borderRadius: 50,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    gap: 20,
-    // width: '25%',
+    gap: 10,
   },
   statusText: {
-    fontSize: 15,
+    fontSize: 12,
     textAlign: 'center',
-    color: '#fff',
-    fontFamily: 'SpaceMono-Regular'
+    color: '#e0e0e0',
+    fontFamily: 'SpaceMono-Regular',
+    marginRight: 10
   },
   inputField: {
     marginVertical: 4,
@@ -365,7 +391,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     marginVertical: 10,
     alignItems: 'center',
-    backgroundColor: '#2F215F',
+    backgroundColor: '#5e60ce',
+    padding: 9,
+  },
+  buttonUnion: {
+    flexDirection: 'row',
+    alignSelf: 'center',
+    borderRadius: 50,
+    justifyContent: 'center',
+    paddingHorizontal: 15,
+    marginVertical: 10,
+    alignItems: 'center',
+    backgroundColor: '#5e60ce',
     padding: 9,
   },
   buttonUpdateSitu: {
@@ -374,21 +411,29 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     marginVertical: 10,
     alignItems: 'center',
-    backgroundColor: '#2F215F',
+    backgroundColor: 'rgba(15, 15, 15, 0.9)',
     padding: 9,
   },
   buttonTextUpdateSitu: {
     fontSize: 15,
     textAlign: 'center',
-    color: '#fff',
+    color: '#000',
     fontWeight: '500',
     // fontFamily: 'Montserrat'
   },
   buttonText: {
     fontSize: 15,
     textAlign: 'center',
+    color: '#000',
+    fontWeight: 'bold',
+    // fontFamily: 'Montserrat'
+  },
+  buttonTextUnion: {
+    fontSize: 15,
+    textAlign: 'center',
     color: '#fff',
     fontWeight: '500',
+    // width: 100,
     // fontFamily: 'Montserrat'
   },
   topSection: {
@@ -403,33 +448,39 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
     borderRadius: 30,
     width: "95%",
-    height: '35%',
+    height: '38%',
     // borderWidth: 1,
     // borderColor: '#eeeeee',
     paddingBottom: "40%",
-    backgroundColor: 'rgba(255, 255, 255, 0.3)',
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 0,
-    },
-    shadowOpacity: 0.4,
-    shadowRadius: 0.5,
+    backgroundColor: 'rgba(25, 25, 25, 0.9)',
+    // shadowColor: "#000",
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 0,
+    // },
+    // shadowOpacity: 0.4,
+    // shadowRadius: 0.5,
   },
   daysContainer: {
-    backgroundColor: 'rgba(190, 190, 190, 0.3)',
+    // backgroundColor: 'rgba(190, 190, 190, 0.1)',
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 20,
     paddingVertical: 10,
-    // height: '15%',
     borderRadius: 10,
+    // shadowColor: "#000",
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 0,
+    // },
+    // shadowOpacity: 0.2,
+    // shadowRadius: 0.5,
   },
   textNumberDays: {
     fontSize: 30,
     fontWeight: 'bold',
     // fontFamily: 'SpaceMono-Regular',
-    color: '#000'
+    color: '#e0e0e0'
   },
   textPersonDays: {
     fontSize: 15,

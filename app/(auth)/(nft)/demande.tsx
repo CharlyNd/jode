@@ -1,4 +1,4 @@
-import { View, Text, TextInput, StyleSheet, SafeAreaView, Image, ActivityIndicator, ScrollView, Alert } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Image, ActivityIndicator, ScrollView, Alert } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
@@ -11,6 +11,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { router } from 'expo-router';
 import * as SMS from 'expo-sms';
 import * as MailComposer from 'expo-mail-composer';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 
 export default function Demande() {
@@ -151,7 +152,7 @@ export default function Demande() {
     if (isAvailable) {
       await SMS.sendSMSAsync(
         phone,
-        `Bonjour ${data.prenom}, clique sur le lien ci dessous, une surprise t'y attends... \n\n https://apps.apple.com/fr/app/the-kut/id1601107524 `,
+        `Bonjour ${data.prenom}, clique sur le lien ci dessous, une surprise t'y attends... Ton code est ${data.code}  \n\n https://apps.apple.com/fr/app/the-kut/id1601107524 `,
         {
           // attachments: {
           //   uri: 'path/myfile.png',
@@ -223,7 +224,7 @@ export default function Demande() {
             <Text style={styles.title}>Ma e-demande</Text>
             <View style={{ flexDirection: "column", alignItems: "flex-end", gap: 3 }}>
               <Text style={{ fontSize: 13 }}>{showNext ? "2 / 2" : "1 / 2"}</Text>
-              <Progress.Bar animated={true} progress={showNext ? 1 : 0.5} width={showNext ? 150 : 70} height={5} color="#2F215F" borderColor='#c1c1c1' />
+              <Progress.Bar animated={true} progress={showNext ? 1 : 0.5} width={showNext ? 150 : 70} height={5} color="#5e60ce" borderColor='#c1c1c1' />
             </View>
           </View>
           <Text style={styles.inputTitle}>Ajoute une image qui représente ta demande</Text>
@@ -362,7 +363,7 @@ export default function Demande() {
           </View>
           <Text style={{color:"#e0e0e0"}}>Aperçu de ta demande que verra {data.prenom} lors de son inscription</Text>
           <View style={{ width: "25%", height: 1, backgroundColor: "#c1c1c1", marginTop: 20, marginBottom: 30 }} />
-          {/* <Ionicons name="checkmark-circle" size={100} color="#2F215F" /> */}
+          {/* <Ionicons name="checkmark-circle" size={100} color="#5e60ce" /> */}
           {imgUrl && <Image source={{ uri: imgUrl }} style={styles.avatar} />}
           {!imgUrl && <View style={styles.avatar} />}
           <Text style={styles.demandeText}>{`${data.prenom}, acceptes-tu la demande d'union digital de ${userName} ?`}</Text>
@@ -458,7 +459,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     minWidth: 130,
     alignItems: 'center',
-    backgroundColor: '#2F215F',
+    backgroundColor: '#5e60ce',
     padding: 12,
   },
   buttonDisable: {
@@ -479,13 +480,13 @@ const styles = StyleSheet.create({
     width: 130,
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#2F215F',
+    borderColor: '#5e60ce',
     padding: 12,
   },
   buttonTextSecond: {
     fontSize: 15,
     textAlign: 'center',
-    color: '#2F215F'
+    color: '#5e60ce'
   },
   buttonText: {
     fontSize: 15,
@@ -515,6 +516,6 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    color: "#2F215F",
+    color: "#5e60ce",
   }
 });

@@ -6,7 +6,8 @@ import {
     TouchableOpacity,
     ActivityIndicator,
     ImageBackground,
-    ScrollView
+    ScrollView,
+    Image
 } from 'react-native';
 import { useRef, useState } from 'react';
 import React from 'react';
@@ -15,6 +16,8 @@ import { Link, useRouter } from 'expo-router';
 import PhoneInput from "react-native-phone-number-input";
 import { TypeAnimation } from 'react-native-type-animation';
 import Animated, { FadeInUp } from 'react-native-reanimated';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 
 const Login = () => {
@@ -43,28 +46,35 @@ const Login = () => {
     };
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <ScrollView style={{ width: "100%" }} contentContainerStyle={{ flexGrow: 1 }}
                 keyboardShouldPersistTaps='handled'>
-                <ImageBackground source={require("../assets/images/background1.png")} resizeMode="cover" style={styles.image}>
-                    <TypeAnimation
-                        sequence={[
-                            { text: 'Entre ton numéro de téléphone 📱 ' },
-                        ]}
-                        style={{
-                            alignSelf: 'center',
-                            position: 'absolute',
-                            top: 100,
-                            color: '#000',
-                            fontSize: 25,
-                            fontFamily: 'SpaceMono-Regular',
-                            width: '90%',
-                            textAlign: 'center',
-                        }}
-                        blinkSpeed={800}
-                        typeSpeed={50}
-                    />
-                    <Animated.View entering={FadeInUp.duration(3500)} style={styles.containerForm}>
+                {/* <ImageBackground source={require("../assets/images/background1.png")} resizeMode="cover" style={styles.image}> */}
+                <Animated.View entering={FadeInUp.duration(3000)} style={styles.containerForm}>
+                    <View style={styles.containerTitle}>
+                        <Text style={styles.title}>Jode</Text>
+                        <Image source={require('../assets/images/bgAccueil.png')} style={{ width: 250, height: 250 }} resizeMode='contain' />
+                    </View>
+                    <View style={{  width: "98%" }}>
+                        <TypeAnimation
+                            sequence={[
+                                { text: 'Entre ton numéro de téléphone' },
+                            ]}
+                            style={{
+                                alignSelf: 'center',
+                                // position: 'absolute',
+                                // top: '25%',
+                                color: '#e0e0e0',
+                                marginBottom: "2%",
+                                fontSize: 20,
+                                fontFamily: 'SpaceMono-Regular',
+                                width: '90%',
+                                textAlign: 'center',
+                            }}
+                            blinkSpeed={800}
+                            typeSpeed={50}
+                            cursor={false}
+                        />
                         {loading && (
                             <View
                                 style={{
@@ -79,112 +89,116 @@ const Login = () => {
                                 <ActivityIndicator size="large" color="#fff" />
                             </View>
                         )}
-                        <TouchableOpacity onPress={() => { onSendOtpPress().then((result) => { result ? router.navigate({ pathname: "codeValidation", params: { phone: phone } }) : console.log("une erreur est survenue") }) }} style={phone.length > 11 ? styles.button : styles.buttonDisabled} disabled={phone.length > 11 ? false : true}>
-                            <Text style={{ color: '#e0e0e0', fontWeight: "bold" }}>Envoyer le code</Text>
-                        </TouchableOpacity>
-                        <PhoneInput
-                            ref={phoneInput}
-                            defaultValue={value}
-                            defaultCode="FR"
-                            layout="second"
-                            onChangeText={(text) => {
-                                setValue(text);
-                            }}
-                            onChangeFormattedText={(text) => {
-                                setPhone(text);
-                            }}
-                            countryPickerProps={{ withAlphaFilter: true }}
-                            placeholder="06 "
-                            textContainerStyle={{ backgroundColor: "#FFF", borderTopLeftRadius: 50, height: 60, borderRadius: 20 }}
-                            codeTextStyle={{
-                                color: "#151515",
-                                fontSize: 15,
-                            }}
-                            countryPickerButtonStyle={{ width: 100, height: 60, backgroundColor: "#f1eeee", borderTopLeftRadius: 20, borderBottomLeftRadius: 20 }}
-                            containerStyle={{
-                                backgroundColor: "#FFF",
-                                width: "90%",
-                                height: 60,
-                                borderRadius: 20,
-                            }}
-                        />
-                    </Animated.View>
-                </ImageBackground>
+                        <View style={styles.containerInput}>
+                            <PhoneInput
+                                ref={phoneInput}
+                                defaultValue={value}
+                                defaultCode="FR"
+                                layout="second"
+                                onChangeText={(text) => {
+                                    setValue(text);
+                                }}
+                                onChangeFormattedText={(text) => {
+                                    setPhone(text);
+                                }}
+                                countryPickerProps={{ withAlphaFilter: true }}
+                                placeholder="06 "
+                                textContainerStyle={{ backgroundColor: "#FFF", height: 60, borderRadius: 20 }}
+                                codeTextStyle={{
+                                    color: "#151515",
+                                    fontSize: 15,
+                                }}
+                                countryPickerButtonStyle={{ width: 100, height: 60, backgroundColor: "#f1eeee", borderTopLeftRadius: 20, borderBottomLeftRadius: 20 }}
+                                containerStyle={{
+                                    backgroundColor: "#FFF",
+                                    width: "80%",
+                                    height: 60,
+                                    borderRadius: 20,
+                                }}
+                            />
+                            <TouchableOpacity onPress={() => { onSendOtpPress().then((result) => { result ? router.navigate({ pathname: "codeValidation", params: { phone: phone } }) : console.log("une erreur est survenue") }) }} style={phone.length > 11 ? styles.button : styles.buttonDisabled} disabled={phone.length > 11 ? false : true}>
+                                <Ionicons name="arrow-forward" size={24} color="#fff" />
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </Animated.View>
+                <Text style={styles.textCGU}>En continuant, tu acceptes notre Politique de Confidentialité et Condition Générales d'Utilisation.</Text>
+                {/* </ImageBackground> */}
             </ScrollView>
-        </View>
+        </SafeAreaView>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: "#000"
+    },
+    containerInput: {
+        flexDirection: "row",
+        justifyContent: "space-around",
+        gap: 10,
+    },
+    textCGU: {
+        width: "90%",
+        alignSelf: "center",
+        fontSize: 14,
+        bottom: "15%",
+        color: "#8e8e8e",
+        marginTop: '10%',
+        textAlign: "center"
     },
     containerForm: {
         padding: 20,
         alignItems: 'center',
+        marginTop: "5%",
         height: '100%',
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
     },
     image: {
         flex: 1,
         justifyContent: 'center',
     },
-    containerBtn: {
-        height: "50%",
-        alignItems: 'center',
-        justifyContent: 'space-around',
-        fontSize: 15,
-        marginTop: 10,
+    containerTitle: {
+        // position: "absolute",
+        // gap: 10,
+        // top: '5%',
+        alignSelf: "center",
+        justifyContent: "center"
     },
-    titlePhone: {
+    title: {
+        alignSelf: "center",
         textAlign: "center",
-        fontSize: 17,
-        color: "#000",
-        fontFamily: "Montserrat_600SemiBold",
-        marginBottom: 20,
-    },
-    textInput: {
-        height: 50,
-        fontSize: 27,
-        borderRadius: 10,
-        textAlign: "center",
-        color: "#22303a",
-        fontFamily: "Montserrat_500Medium",
-        backgroundColor: "#e0e0e0",
-        paddingHorizontal: 10,
+        fontSize: 40,
+        fontWeight: "bold",
+        color: "#e0e0e0",
     },
     header: {
         fontSize: 30,
         textAlign: 'center',
         color: '#000',
     },
-    inputField: {
-        marginVertical: 8,
-        height: 50,
-        borderRadius: 15,
-        padding: 10,
-        color: '#e0e0e0',
-        backgroundColor: '#202020',
-    },
     button: {
         alignSelf: 'center',
-        width: '80%',
-        position: 'absolute',
-        bottom: 20,
+        width: '15%',
+        justifyContent: 'center',
+        height: 60,
         alignItems: 'center',
-        backgroundColor: '#2F215F',
+        backgroundColor: '#5e60ce',
         padding: 12,
-        borderRadius: 25,
+        borderRadius: 20,
     },
     buttonDisabled: {
         alignSelf: 'center',
-        width: '80%',
-        position: 'absolute',
-        bottom: 20,
+        width: '15%',
+        justifyContent: 'center',
+        height: 60,
         alignItems: 'center',
-        backgroundColor: '#a1a1a1',
+        borderWidth: 1,
+        borderColor: "#8e8e8e",
+        backgroundColor: '#010101',
         padding: 12,
-        borderRadius: 25,
+        borderRadius: 50,
     },
 });
 

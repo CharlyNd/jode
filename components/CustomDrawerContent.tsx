@@ -163,7 +163,7 @@ export default function CustomDrawerContent(props: any) {
             .eq('userId', User?.id);
 
         console.log(error);
-        Alert.alert("Votre partenaire a bien été enregistré");
+        Alert.alert("Ton partenaire a bien été enregistré");
     };
 
     const updateInstagram = async () => {
@@ -243,7 +243,7 @@ export default function CustomDrawerContent(props: any) {
             .eq('userId', User?.id);
 
         console.log(error);
-        Alert.alert("Ta Jode a bien été modifiée");
+        Alert.alert("Ta Jode a bien été modifiée 🚦");
     };
 
     const updateVisible = async (newStatus: boolean) => {
@@ -264,177 +264,179 @@ export default function CustomDrawerContent(props: any) {
 
     return (
         <View style={styles.container}>
-            <ScrollView style={{ width: "100%" }} contentContainerStyle={{ flexGrow: 1 }} automaticallyAdjustKeyboardInsets>
-                <ImageBackground source={require("../assets/images/background1.png")} resizeMode="cover" style={styles.image}>
-                    <View style={styles.imageSection}>
-                        <Link href='/(tabs)/home' asChild>
-                            <TouchableOpacity>
-                                {image && <Image source={{ uri: image }} style={styles.avatar} />}
-                                {!image && <View style={styles.avatar} />}
-                            </TouchableOpacity>
-                        </Link>
-                    </View>
-                    <View style={styles.backContainer}>
-                        <TouchableOpacity
-                            onPress={() => navigation.dispatch(DrawerActions.closeDrawer())} >
-                            <Ionicons name="chevron-forward-sharp" size={40} color="#cacaca" />
+            <ScrollView style={{ width: "100%" }} contentContainerStyle={{ flexGrow: 1 }} automaticallyAdjustKeyboardInsets showsVerticalScrollIndicator={false}>
+                {/* <ImageBackground source={require("../assets/images/background1.png")} resizeMode="cover" style={styles.image}> */}
+                <View style={styles.imageSection}>
+                    <Link href='/(tabs)/home' asChild>
+                        <TouchableOpacity>
+                            {image && <Image source={{ uri: image }} style={styles.avatar} />}
+                            {!image && <View style={styles.avatar} />}
                         </TouchableOpacity>
-                    </View>
-                    <View style={styles.settingsContainer}>
-                        <View style={styles.containerTitleVisibility}>
-                            <View>
-                                <Text style={styles.containerTitle}>Recherche et visibilité</Text>
-                            </View>
-                            <View style={{
+                    </Link>
+                </View>
+                <View style={styles.backContainer}>
+                    <TouchableOpacity
+                        onPress={() => navigation.dispatch(DrawerActions.closeDrawer())} >
+                        <Ionicons name="chevron-forward-sharp" size={40} color="#5e60ce" />
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.settingsContainer}>
+                    <View style={styles.containerTitleVisibility}>
+                        <View>
+                            <Text style={styles.containerTitle}>Recherche et visibilité</Text>
+                        </View>
+                        {/* <View style={{
                                 backgroundColor: hideStatus ? "#3fb57e" : "#bb3838", borderRadius: 50, paddingHorizontal: 10, paddingVertical: 3
                             }}>
-                                <Text style={{ color: hideStatus ? "#000" : "#FFF", fontSize: 12 }}>{hideStatus ? "activée" : "désactivée"}</Text>
-                            </View>
+                                <Text style={{ color: hideStatus ? "#fff" : "#FFF", fontSize: 12 }}>{hideStatus ? "activée" : "désactivée"}</Text>
+                            </View> */}
+                    </View>
+                    <View style={styles.optionSettingsRow}>
+                        {/* <Text style={!hideStatus ? styles.statusTextInactive : styles.statusTextActive}>visible</Text> */}
+                        <Switch
+                            trackColor={{ false: '#cacaca', true: '#5e60ce' }}
+                            thumbColor={!hideStatus ? '#e1e1e1' : '#e1e1e1'}
+                            ios_backgroundColor={!hideStatus ? '#5e60ce' : '#cacaca'}
+                            onValueChange={() => { setHideStatus(previousState => !previousState); updateVisible(!hideStatus); }}
+                            value={!hideStatus}
+                            style={{ transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }] }}
+                        />
+                        <View style={!hideStatus ? styles.containerStatusInactive : styles.containerStatusActive}>
+                        <Text style={styles.statusTextActive}>{!hideStatus ? "masqué" : "visible"}</Text>
                         </View>
-                        <View style={styles.optionSettingsRow}>
-                            <Text style={!hideStatus ? styles.statusTextInactive : styles.statusTextActive}>visible</Text>
-                            <Switch
-                                trackColor={{ false: '#cacaca', true: '#2F215F' }}
-                                thumbColor={!hideStatus ? '#e1e1e1' : '#e1e1e1'}
-                                ios_backgroundColor={!hideStatus ? '#2F215F' : '#cacaca'}
-                                onValueChange={() => { setHideStatus(previousState => !previousState); updateVisible(hideStatus); }}
-                                value={!hideStatus}
-                                style={{ transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }] }}
-                            />
-                            <Text style={!hideStatus ? styles.statusTextActive : styles.statusTextInactive}>masqué</Text>
-                        </View>
-                        <View style={styles.optionSettingsRow}>
-                            <Text style={styles.text}>Nom et Prénom</Text>
-                            <Switch
-                                trackColor={{ false: '#cacaca', true: '#2F215F' }}
-                                thumbColor={hideStatus ? '#e1e1e1' : '#e1e1e1'}
-                                ios_backgroundColor={hideStatus ? '#2F215F' : '#cacaca'}
-                                onValueChange={() => setHideStatus(previousState => !previousState)}
-                                value={hideStatus}
-                                disabled
-                                style={{ transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }] }}
-                            />
-                        </View>
-                        <View style={styles.optionSettingsRow}>
-                            <Text style={styles.text}>Téléphone</Text>
-                            <Switch
-                                trackColor={{ false: '#cacaca', true: '#2F215F' }}
-                                thumbColor={hideStatus ? '#e1e1e1' : '#e1e1e1'}
-                                ios_backgroundColor={hideStatus ? '#2F215F' : '#cacaca'}
-                                onValueChange={() => setHideStatus(previousState => !previousState)}
-                                disabled
-                                value={hideStatus}
-                                style={{ transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }] }}
-                            />
-                        </View>
-                        <View style={styles.optionSettingsRow}>
-                            <View style={styles.socialContainer}>
-                                {oldInsta === "" && (<Text style={styles.text}>Instagram</Text>)}
-                                <Ionicons name="logo-instagram" size={20} color="black" />
-                                {oldInsta !== "" ?
-                                    <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
-                                        <Text style={{ color: '#2F215F', fontSize: 14 }}>@{oldInsta}</Text>
-                                        <View style={{
-                                            backgroundColor: instaVerified ? "#3fb57e" : "#bb3838", borderRadius: 50, paddingHorizontal: 10, paddingVertical: 3
-                                        }}>
-                                            <Text style={{ color: instaVerified ? "#000" : "#FFF", fontSize: 11 }}>{instaVerified ? "vérifié" : "non vérifié"}</Text>
-                                        </View>
-                                    </View> : null}
+                    </View>
+                    <View style={styles.optionSettingsRow}>
+                        <Text style={styles.text}>Nom et Prénom</Text>
+                        <Switch
+                            trackColor={{ false: '#cacaca', true: '#5e60ce' }}
+                            thumbColor={hideStatus ? '#e1e1e1' : '#e1e1e1'}
+                            ios_backgroundColor={hideStatus ? '#5e60ce' : '#cacaca'}
+                            onValueChange={() => setHideStatus(previousState => !previousState)}
+                            value={hideStatus}
+                            disabled
+                            style={{ transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }] }}
+                        />
+                    </View>
+                    <View style={styles.optionSettingsRow}>
+                        <Text style={styles.text}>Téléphone</Text>
+                        <Switch
+                            trackColor={{ false: '#cacaca', true: '#5e60ce' }}
+                            thumbColor={hideStatus ? '#e1e1e1' : '#e1e1e1'}
+                            ios_backgroundColor={hideStatus ? '#5e60ce' : '#cacaca'}
+                            onValueChange={() => setHideStatus(previousState => !previousState)}
+                            disabled
+                            value={hideStatus}
+                            style={{ transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }] }}
+                        />
+                    </View>
+                    <View style={styles.optionSettingsRow}>
+                        <View style={styles.socialContainer}>
+                            {oldInsta === "" && (<Text style={styles.text}>Instagram</Text>)}
+                            <Ionicons name="logo-instagram" size={20} color="#fff" />
+                            {oldInsta !== "" ?
+                                <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
+                                    <Text style={{ color: '#fff', fontSize: 14 }}>@{oldInsta}</Text>
+                                    <View style={{
+                                        backgroundColor: instaVerified ? "#3fb57e" : "#bb3838", borderRadius: 5, paddingHorizontal: 5, paddingVertical: 3
+                                    }}>
+                                        <Text style={{ color: instaVerified ? "#fff" : "#FFF", fontSize: 11 }}>{instaVerified ? "vérifié" : "non vérifié"}</Text>
+                                    </View>
+                                </View> : null}
 
-                            </View>
-                            <TouchableOpacity onPress={() => { setInstagramVisible(!instagramVisible) }} style={!instagramVisible ? styles.buttonSocial : styles.buttonSocialActive}>
-                                <Text style={{ color: !instagramVisible ? '#fff' : '#2F215F', fontSize: 12 }}>{oldInsta === "" ? (!instagramVisible ? "Ajouter" : "Fermer") : (!instaVerified ? "Vérifier" : "Modifier")}</Text>
-                            </TouchableOpacity>
                         </View>
+                        <TouchableOpacity onPress={() => { setInstagramVisible(!instagramVisible) }} style={!instagramVisible ? styles.buttonSocial : styles.buttonSocialActive}>
+                            <Text style={{ color: !instagramVisible ? '#fff' : '#5e60ce', fontSize: 12 }}>{oldInsta === "" ? (!instagramVisible ? "Ajouter" : "Fermer") : (!instaVerified ? "Vérifier" : "Modifier")}</Text>
+                        </TouchableOpacity>
+                    </View>
 
-                        {instagramVisible && (
-                            <View>
-                                {(oldInsta !== "" && !instaVerified) && (
-                                    <View style={{ flexDirection: "row", alignItems: "center", gap: 10, marginTop: 10 }}>
-                                        <TextInput
-                                            autoCapitalize="none"
-                                            placeholder="code reçu"
-                                            placeholderTextColor={"#808080"}
-                                            value={newCodeInsta}
-                                            onChangeText={setNewCodeInsta}
-                                            style={styles.inputFieldSocial}
-                                        />
-                                        <TouchableOpacity onPress={() => { updateInstaVerified() }} style={newCodeInsta !== "" ? styles.buttonSocial : styles.buttonSocialDisabled}>
-                                            <Text style={{ color: '#fff', fontSize: 12 }}>  Vérifier le code</Text>
-                                        </TouchableOpacity>
-                                    </View>)}
-                                <View style={{ flexDirection: "row", alignItems: "center", gap: 10, marginVertical: 20 }}>
-                                    <Text style={styles.text}>@</Text>
+                    {instagramVisible && (
+                        <View>
+                            {(oldInsta !== "" && !instaVerified) && (
+                                <View style={{ flexDirection: "row", alignItems: "center", gap: 10, marginTop: 10 }}>
                                     <TextInput
                                         autoCapitalize="none"
-                                        placeholder={oldInsta !== "" ? oldInsta : "ton_insta"}
+                                        placeholder="code reçu"
                                         placeholderTextColor={"#808080"}
-                                        value={instagram}
-                                        onChangeText={setInstagram}
+                                        value={newCodeInsta}
+                                        onChangeText={setNewCodeInsta}
                                         style={styles.inputFieldSocial}
                                     />
-                                    <TouchableOpacity onPress={() => { updateInstagram() }} style={instagram !== "" ? styles.buttonSocial : styles.buttonSocialDisabled}>
-                                        <Text style={{ color: '#fff', fontSize: 12 }}>modifier</Text>
+                                    <TouchableOpacity onPress={() => { updateInstaVerified() }} style={newCodeInsta !== "" ? styles.buttonSocial : styles.buttonSocialDisabled}>
+                                        <Text style={{ color: '#fff', fontSize: 12 }}>  Vérifier le code</Text>
                                     </TouchableOpacity>
-                                </View>
+                                </View>)}
+                            <View style={{ flexDirection: "row", alignItems: "center", gap: 10, marginVertical: 20 }}>
+                                <Text style={styles.text}>@</Text>
+                                <TextInput
+                                    autoCapitalize="none"
+                                    placeholder={oldInsta !== "" ? oldInsta : "ton_insta"}
+                                    placeholderTextColor={"#808080"}
+                                    value={instagram}
+                                    onChangeText={setInstagram}
+                                    style={styles.inputFieldSocial}
+                                />
+                                <TouchableOpacity onPress={() => { updateInstagram() }} style={instagram !== "" ? styles.buttonSocial : styles.buttonSocialDisabled}>
+                                    <Text style={{ color: '#fff', fontSize: 12 }}>modifier</Text>
+                                </TouchableOpacity>
                             </View>
-                        )}
-
-                        <View style={styles.optionSettingsRow}>
-                            <View style={styles.socialContainer}>
-                                {oldSnap === "" && (<Text style={styles.text}>Snapshat</Text>)}
-                                <MaterialIcons name="snapchat" size={20} color="black" />
-                                {oldSnap !== "" ?
-                                    <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
-                                        <Text style={{ color: '#2F215F', fontSize: 14 }}>@{oldSnap}</Text>
-                                        <View style={{
-                                            backgroundColor: snapVerified ? "#3fb57e" : "#bb3838", borderRadius: 50, paddingHorizontal: 10, paddingVertical: 3
-                                        }}>
-                                            <Text style={{ color: snapVerified ? "#000" : "#FFF", fontSize: 11 }}>{snapVerified ? "vérifié" : "non vérifié"}</Text>
-                                        </View>
-                                    </View> : null}
-
-                            </View>
-                            <TouchableOpacity onPress={() => { setSnapshatVisible(!snapshatVisible) }} style={!snapshatVisible ? styles.buttonSocial : styles.buttonSocialActive}>
-                                <Text style={{ color: !snapshatVisible ? '#fff' : '#2F215F', fontSize: 12 }}>{oldSnap === "" ? (!snapshatVisible ? "Ajouter" : "Fermer") : (!snapVerified ? "Vérifier" : "Modifier")}</Text>
-                            </TouchableOpacity>
                         </View>
+                    )}
 
-                        {snapshatVisible && (
-                            <View>
-                                {(oldSnap !== "" && !snapVerified) && (
-                                    <View style={{ flexDirection: "row", alignItems: "center", gap: 10, marginTop: 10 }}>
-                                        <TextInput
-                                            autoCapitalize="none"
-                                            placeholder="code reçu"
-                                            placeholderTextColor={"#808080"}
-                                            value={codeSnap}
-                                            onChangeText={setCodeSnap}
-                                            style={styles.inputFieldSocial}
-                                        />
-                                        <TouchableOpacity onPress={() => { updateSnapVerified() }} style={codeSnap !== "" ? styles.buttonSocial : styles.buttonSocialDisabled}>
-                                            <Text style={{ color: '#fff', fontSize: 12 }}>  Vérifier le code</Text>
-                                        </TouchableOpacity>
-                                    </View>)}
-                                <View style={{ flexDirection: "row", alignItems: "center", gap: 10, marginVertical: 20 }}>
-                                    <Text style={styles.text}>@</Text>
+                    <View style={styles.optionSettingsRow}>
+                        <View style={styles.socialContainer}>
+                            {oldSnap === "" && (<Text style={styles.text}>Snapshat</Text>)}
+                            <MaterialIcons name="snapchat" size={20} color="#fff" />
+                            {oldSnap !== "" ?
+                                <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
+                                    <Text style={{ color: '#fff', fontSize: 14 }}>@{oldSnap}</Text>
+                                    <View style={{
+                                        backgroundColor: snapVerified ? "#3fb57e" : "#bb3838", borderRadius: 5, paddingHorizontal: 5, paddingVertical: 3
+                                    }}>
+                                        <Text style={{ color: snapVerified ? "#fff" : "#FFF", fontSize: 11 }}>{snapVerified ? "vérifié" : "non vérifié"}</Text>
+                                    </View>
+                                </View> : null}
+
+                        </View>
+                        <TouchableOpacity onPress={() => { setSnapshatVisible(!snapshatVisible) }} style={!snapshatVisible ? styles.buttonSocial : styles.buttonSocialActive}>
+                            <Text style={{ color: !snapshatVisible ? '#fff' : '#5e60ce', fontSize: 12 }}>{oldSnap === "" ? (!snapshatVisible ? "Ajouter" : "Fermer") : (!snapVerified ? "Vérifier" : "Modifier")}</Text>
+                        </TouchableOpacity>
+                    </View>
+
+                    {snapshatVisible && (
+                        <View>
+                            {(oldSnap !== "" && !snapVerified) && (
+                                <View style={{ flexDirection: "row", alignItems: "center", gap: 10, marginTop: 10 }}>
                                     <TextInput
                                         autoCapitalize="none"
-                                        placeholder={oldSnap !== "" ? oldSnap : "ton_snap"}
+                                        placeholder="code reçu"
                                         placeholderTextColor={"#808080"}
-                                        value={snapshat}
-                                        onChangeText={setSnapshat}
+                                        value={codeSnap}
+                                        onChangeText={setCodeSnap}
                                         style={styles.inputFieldSocial}
                                     />
-                                    <TouchableOpacity onPress={() => { updateSnapshat() }} style={snapshat !== "" ? styles.buttonSocial : styles.buttonSocialDisabled}>
-                                        <Text style={{ color: '#fff', fontSize: 12 }}>modifier</Text>
+                                    <TouchableOpacity onPress={() => { updateSnapVerified() }} style={codeSnap !== "" ? styles.buttonSocial : styles.buttonSocialDisabled}>
+                                        <Text style={{ color: '#fff', fontSize: 12 }}>  Vérifier le code</Text>
                                     </TouchableOpacity>
-                                </View>
+                                </View>)}
+                            <View style={{ flexDirection: "row", alignItems: "center", gap: 10, marginVertical: 20 }}>
+                                <Text style={styles.text}>@</Text>
+                                <TextInput
+                                    autoCapitalize="none"
+                                    placeholder={oldSnap !== "" ? oldSnap : "ton_snap"}
+                                    placeholderTextColor={"#808080"}
+                                    value={snapshat}
+                                    onChangeText={setSnapshat}
+                                    style={styles.inputFieldSocial}
+                                />
+                                <TouchableOpacity onPress={() => { updateSnapshat() }} style={snapshat !== "" ? styles.buttonSocial : styles.buttonSocialDisabled}>
+                                    <Text style={{ color: '#fff', fontSize: 12 }}>modifier</Text>
+                                </TouchableOpacity>
                             </View>
-                        )}
+                        </View>
+                    )}
 
 
-                        {/* {snapshatVisible && (
+                    {/* {snapshatVisible && (
                             <View>
                                 {snapshat !== "" && (
                                     <View style={{ flexDirection: "row", alignItems: "center", gap: 10, marginTop: 10 }}>
@@ -467,107 +469,107 @@ export default function CustomDrawerContent(props: any) {
                             </View>
                         )} */}
 
-                    </View>
-                    <View style={styles.statusContainer}>
-                        <Text style={styles.containerTitle}>Ma situation</Text>
-                        <View style={styles.statusSection}>
-                            <View>
-                                <View style={styles.optionSettingsRow}>
-                                    <Text style={styles.text}>En couple</Text>
-                                    <Switch
-                                        trackColor={{ false: '#cacaca', true: '#2F215F' }}
-                                        thumbColor={couple ? '#e1e1e1' : '#e1e1e1'}
-                                        ios_backgroundColor={couple ? '#2F215F' : '#cacaca'}
-                                        disabled={couple}
-                                        onValueChange={() => { setCouple(previousState => !previousState); setLibre(false); setCelib(false); }}
-                                        value={couple}
-                                        style={{ transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }] }}
-                                    />
-                                </View>
-                                <View style={styles.optionSettingsRow}>
-                                    <Text style={styles.text}>Relation libre</Text>
-                                    <Switch
-                                        trackColor={{ false: '#cacaca', true: '#2F215F' }}
-                                        thumbColor={libre ? '#e1e1e1' : '#e1e1e1'}
-                                        ios_backgroundColor={libre ? '#2F215F' : '#cacaca'}
-                                        disabled={libre}
-                                        onValueChange={() => { setLibre(previousState => !previousState); setCelib(false); setCouple(false); updateSituation("libre") }}
-                                        value={libre}
-                                        style={{ transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }] }}
-                                    />
-                                </View>
-                                <View style={styles.optionSettingsRow}>
-                                    <Text style={styles.text}>Célibataire</Text>
-                                    <Switch
-                                        trackColor={{ false: '#cacaca', true: '#2F215F' }}
-                                        thumbColor={celib ? '#e1e1e1' : '#e1e1e1'}
-                                        ios_backgroundColor={celib ? '#2F215F' : '#cacaca'}
-                                        disabled={celib}
-                                        onValueChange={() => { setCelib(previousState => !previousState); setLibre(false); setCouple(false); updateSituation("celibataire") }}
-                                        value={celib}
-                                        style={{ transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }] }}
-                                    />
-                                </View>
-
+                </View>
+                <View style={styles.statusContainer}>
+                    <Text style={styles.containerTitle}>Ma situation</Text>
+                    <View style={styles.statusSection}>
+                        <View>
+                            <View style={styles.optionSettingsRow}>
+                                <Text style={styles.text}>En couple</Text>
+                                <Switch
+                                    trackColor={{ false: '#cacaca', true: '#5e60ce' }}
+                                    thumbColor={couple ? '#e1e1e1' : '#e1e1e1'}
+                                    ios_backgroundColor={couple ? '#5e60ce' : '#cacaca'}
+                                    disabled={couple}
+                                    onValueChange={() => { setCouple(previousState => !previousState); setLibre(false); setCelib(false); }}
+                                    value={couple}
+                                    style={{ transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }] }}
+                                />
                             </View>
-                            <View>
-                                <TrafficLight color={celib ? "celibataire" : libre ? "libre" : couple ? "couple" : "celibataire"} />
+                            <View style={styles.optionSettingsRow}>
+                                <Text style={styles.text}>Relation libre</Text>
+                                <Switch
+                                    trackColor={{ false: '#cacaca', true: '#5e60ce' }}
+                                    thumbColor={libre ? '#e1e1e1' : '#e1e1e1'}
+                                    ios_backgroundColor={libre ? '#5e60ce' : '#cacaca'}
+                                    disabled={libre}
+                                    onValueChange={() => { setLibre(previousState => !previousState); setCelib(false); setCouple(false); updateSituation("libre") }}
+                                    value={libre}
+                                    style={{ transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }] }}
+                                />
+                            </View>
+                            <View style={styles.optionSettingsRow}>
+                                <Text style={styles.text}>Célibataire</Text>
+                                <Switch
+                                    trackColor={{ false: '#cacaca', true: '#5e60ce' }}
+                                    thumbColor={celib ? '#e1e1e1' : '#e1e1e1'}
+                                    ios_backgroundColor={celib ? '#5e60ce' : '#cacaca'}
+                                    disabled={celib}
+                                    onValueChange={() => { setCelib(previousState => !previousState); setLibre(false); setCouple(false); updateSituation("celibataire") }}
+                                    value={celib}
+                                    style={{ transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }] }}
+                                />
+                            </View>
+
+                        </View>
+                        <View>
+                            <TrafficLight color={celib ? "celibataire" : libre ? "libre" : couple ? "couple" : "celibataire"} />
+                        </View>
+                    </View>
+                    {couple && (
+                        <View style={styles.containerDate}>
+                            <View style={{ maxWidth: "50%" }}>
+                                <Text style={styles.text}>Jour de votre rencontre</Text>
+                            </View>
+                            <View style={styles.dateContainer}>
+                                {Platform.OS === 'android' && (
+                                    <TouchableOpacity onPress={showDatePicker} style={styles.buttonDate}>
+                                        <Text style={{ fontSize: 15, fontFamily: "SpaceMono-Regular", color: "#fff" }}>
+                                            {dateFormatted !== "" ? dateFormatted : 'Choisir la date'}
+                                        </Text>
+                                    </TouchableOpacity>)}
+                                {datePickerVisible && (<DateTimePicker
+                                    testID="dateTimePicker"
+                                    value={date}
+                                    mode={mode}
+                                    onChange={onChange}
+                                    locale='fr'
+                                    textColor='#fff'
+                                // style={{ backgroundColor: dateSelected === '' ? '' : '#54b8b3' }}
+                                />)
+                                }
                             </View>
                         </View>
-                        {couple && (
-                            <View style={styles.containerDate}>
-                                <View style={{ maxWidth: "50%" }}>
-                                    <Text style={styles.text}>Jour de votre rencontre</Text>
-                                </View>
-                                <View style={styles.dateContainer}>
-                                    {Platform.OS === 'android' && (
-                                        <TouchableOpacity onPress={showDatePicker} style={styles.buttonDate}>
-                                            <Text style={{ fontSize: 15, fontFamily: "SpaceMono-Regular", color: "#fff" }}>
-                                                {dateFormatted !== "" ? dateFormatted : 'Choisir la date'}
-                                            </Text>
-                                        </TouchableOpacity>)}
-                                    {datePickerVisible && (<DateTimePicker
-                                        testID="dateTimePicker"
-                                        value={date}
-                                        mode={mode}
-                                        onChange={onChange}
-                                        locale='fr'
-                                        textColor='#fff'
-                                    // style={{ backgroundColor: dateSelected === '' ? '' : '#54b8b3' }}
-                                    />)
-                                    }
-                                </View>
-                            </View>
-                        )}
-                        {couple && dateSelected !== '' ? (
-                            <View style={{ width: "100%" }}>
-                                <TextInput
-                                    autoCapitalize="none"
-                                    placeholder={prenom !== "" ? prenom : "Son prénom"}
-                                    placeholderTextColor={"#808080"}
-                                    value={prenom}
-                                    onChangeText={setPrenom}
-                                    style={prenom !== "" ? styles.inputField : styles.inputFieldError}
-                                />
-                                <TouchableOpacity onPress={() => { updateDate(); updatePartenaire(); updateSituation("couple"); }} style={styles.buttonUpdateDate}>
-                                    <Text style={{ color: '#fff', fontSize: 16 }}>Enregistrer</Text>
-                                </TouchableOpacity>
-                            </View>
-                        ) : null
-                        }
-                    </View>
-                    <DrawerContentScrollView {...props} scrollEnabled={false}>
-                        <DrawerItemList {...props} />
-                    </DrawerContentScrollView>
-                    <View>
-                        <TouchableOpacity style={styles.button}
-                            onPress={() => logUserOut()} >
-                            <Text style={styles.buttonText}>Déconnexion</Text>
-                        </TouchableOpacity>
-                    </View>
-                </ImageBackground>
-            </ScrollView>
-        </View>
+                    )}
+                    {couple && dateSelected !== '' ? (
+                        <View style={{ width: "100%" }}>
+                            <TextInput
+                                autoCapitalize="none"
+                                placeholder={prenom !== "" ? prenom : "Son prénom"}
+                                placeholderTextColor={"#808080"}
+                                value={prenom}
+                                onChangeText={setPrenom}
+                                style={prenom !== "" ? styles.inputField : styles.inputFieldError}
+                            />
+                            <TouchableOpacity onPress={() => { updateDate(); updatePartenaire(); updateSituation("couple"); }} style={styles.buttonUpdateDate}>
+                                <Text style={{ color: '#fff', fontSize: 16 }}>Enregistrer</Text>
+                            </TouchableOpacity>
+                        </View>
+                    ) : null
+                    }
+                </View>
+                <DrawerContentScrollView {...props} scrollEnabled={false}>
+                    <DrawerItemList {...props} />
+                </DrawerContentScrollView>
+                <View>
+                    <TouchableOpacity style={styles.button}
+                        onPress={() => logUserOut()} >
+                        <Text style={styles.buttonText}>Déconnexion</Text>
+                    </TouchableOpacity>
+                </View>
+                {/* </ImageBackground> */ }
+            </ScrollView >
+        </View >
     );
 
 }
@@ -576,6 +578,7 @@ export default function CustomDrawerContent(props: any) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: "#101010"
     },
     image: {
         flex: 1,
@@ -583,34 +586,34 @@ const styles = StyleSheet.create({
     },
     buttonDate: {
         alignItems: 'center',
-        backgroundColor: '#2F215F',
+        backgroundColor: '#5e60ce',
         paddingHorizontal: 10,
         paddingVertical: 3,
-        borderRadius: 5,
+        borderRadius: 50,
     },
     buttonUpdateDate: {
         alignItems: 'center',
-        backgroundColor: '#2F215F',
+        backgroundColor: '#5e60ce',
         paddingHorizontal: 15,
         paddingVertical: 10,
-        borderRadius: 5,
+        borderRadius: 50,
         marginTop: 20,
     },
     buttonSocial: {
         alignItems: 'center',
-        backgroundColor: '#2F215F',
+        backgroundColor: '#5e60ce',
         paddingHorizontal: 15,
         paddingVertical: 5,
-        borderRadius: 5,
+        borderRadius: 50,
         marginTop: 5,
     },
     buttonSocialActive: {
         alignItems: 'center',
         borderWidth: 1,
-        borderColor: '#2F215F',
+        borderColor: '#5e60ce',
         paddingHorizontal: 15,
         paddingVertical: 5,
-        borderRadius: 5,
+        borderRadius: 50,
         marginTop: 5,
     },
     buttonSocialDisabled: {
@@ -618,7 +621,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#a1a1a1',
         paddingHorizontal: 15,
         paddingVertical: 5,
-        borderRadius: 5,
+        borderRadius: 50,
         marginTop: 5,
     },
     containerTitleVisibility: {
@@ -639,7 +642,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         marginTop: 20,
         alignItems: 'center',
-        maxHeight: 170
+        maxHeight: 150
     },
     containerDate: {
         width: '90%',
@@ -667,24 +670,33 @@ const styles = StyleSheet.create({
         alignItems: 'flex-end',
         top: 100,
     },
+    containerStatusActive: {
+        backgroundColor: "#3fb57e",
+        borderRadius: 5,
+        paddingHorizontal: 5,
+        paddingVertical: 3
+    },
+    containerStatusInactive: {
+        borderRadius: 5,
+        backgroundColor: "#bb3838",
+        paddingHorizontal: 5,
+        paddingVertical: 3
+    },
     statusTextActive: {
-        padding: 5,
-        borderRadius: 10,
-        borderColor: '#2F215F',
-        fontSize: 15,
-        fontWeight: 'bold',
+        fontSize: 12,
         textAlign: 'center',
-        color: '#000'
+        color: '#fff',
     },
     statusTextInactive: {
+        padding: 5,
         fontSize: 15,
         textAlign: 'center',
-        color: '#8d8d8d'
+        color: '#fff',
     },
     text: {
         fontSize: 15,
         textAlign: 'center',
-        color: '#000'
+        color: '#fff'
     },
     statusContainer: {
         width: '90%',
@@ -694,14 +706,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: 20,
         marginTop: 20,
-        backgroundColor: 'rgba(255, 255, 255, 0.2)',
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 5,
-        },
-        shadowOpacity: 0.58,
-        shadowRadius: 16.00,
+        backgroundColor: "#000",
+        // shadowColor: "#000",
+        // shadowOffset: {
+        //     width: 0,
+        //     height: 0,
+        // },
+        // shadowOpacity: 0.58,
+        // shadowRadius: 3.00,
     },
     socialContainer: {
         flexDirection: 'row',
@@ -711,7 +723,7 @@ const styles = StyleSheet.create({
     containerTitle: {
         fontSize: 18,
         textAlign: 'center',
-        color: '#000',
+        color: '#b0b0b0',
         // marginBottom: 15
     },
     optionSettingsRow: {
@@ -728,14 +740,14 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         alignItems: 'center',
         padding: 20,
-        backgroundColor: 'rgba(255, 255, 255, 0.2)',
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 5,
-        },
-        shadowOpacity: 0.58,
-        shadowRadius: 16.00,
+        backgroundColor: '#000',
+        // shadowColor: "#000",
+        // shadowOffset: {
+        //     width: 0,
+        //     height: 5,
+        // },
+        // shadowOpacity: 0.58,
+        // shadowRadius: 3.00,
     },
     button: {
         alignSelf: 'center',
@@ -747,7 +759,7 @@ const styles = StyleSheet.create({
     buttonText: {
         fontSize: 15,
         textAlign: 'center',
-        color: '#2F215F'
+        color: '#5e60ce'
     },
     inputField: {
         marginTop: 15,
@@ -756,7 +768,7 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         fontSize: 18,
         padding: 10,
-        color: '#000',
+        color: '#fff',
         borderWidth: 1,
         borderColor: '#54b8b3',
         zIndex: 0,
@@ -767,7 +779,7 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         fontSize: 16,
         padding: 10,
-        color: '#000',
+        color: '#fff',
         borderWidth: 1,
         borderColor: '#54b8b3',
         zIndex: 0,
@@ -778,7 +790,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         fontSize: 16,
         padding: 10,
-        color: '#000',
+        color: '#fff',
         borderWidth: 1,
         borderColor: '#b2004d',
         zIndex: 0,
@@ -790,7 +802,7 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         fontSize: 18,
         padding: 10,
-        color: '#000',
+        color: '#fff',
         borderWidth: 1,
         borderColor: '#b2004d',
         zIndex: 0,
